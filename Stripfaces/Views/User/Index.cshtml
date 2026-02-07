@@ -1,0 +1,97 @@
+﻿@{
+    ViewData["Title"] = $"{Context.Session.GetString("Role")} Dashboard";
+}
+
+<div class="welcome-section">
+    <h1>Welcome, @ViewData["Username"]!</h1>
+    <p style="color: var(--gray-dark); margin-top: 0.5rem;">
+        Welcome to your StreamFlix dashboard. Start streaming your favorite content.
+    </p>
+</div>
+
+<div class="dashboard-grid">
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-play-circle"></i>
+        </div>
+        <div class="stat-info">
+            <h3>128</h3>
+            <p>Videos Watched</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-info">
+            <h3>45h</h3>
+            <p>Watch Time</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-heart"></i>
+        </div>
+        <div class="stat-info">
+            <h3>24</h3>
+            <p>Favorites</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-history"></i>
+        </div>
+        <div class="stat-info">
+            <h3>12</h3>
+            <p>Watch Later</p>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 2.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2>Continue Watching</h2>
+        <a href="#" class="btn-primary">Browse All</a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+        <div class="card">
+            <div style="height: 160px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center;
+                        justify-content: center; color: white; font-size: 3rem;">
+                <i class="fas fa-play"></i>
+            </div>
+            <h3>Action Movie Marathon</h3>
+            <p style="color: var(--gray-dark); margin: 0.5rem 0;">45% completed</p>
+            <div style="height: 6px; background: var(--gray-medium); border-radius: 3px; overflow: hidden;">
+                <div style="width: 45%; height: 100%; background: var(--primary-blue);"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div style="height: 160px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                        border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center;
+                        justify-content: center; color: white; font-size: 3rem;">
+                <i class="fas fa-play"></i>
+            </div>
+            <h3>Comedy Specials</h3>
+            <p style="color: var(--gray-dark); margin: 0.5rem 0;">72% completed</p>
+            <div style="height: 6px; background: var(--gray-medium); border-radius: 3px; overflow: hidden;">
+                <div style="width: 72%; height: 100%; background: var(--primary-blue);"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h2 style="color: white;">Upgrade to Premium</h2>
+            <p>Get access to exclusive content, 4K streaming, and no ads</p>
+        </div>
+        <a href="#" style="background: white; color: var(--primary-blue);" class="btn-primary">Upgrade Now</a>
+    </div>
+</div>

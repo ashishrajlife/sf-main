@@ -1,0 +1,245 @@
+﻿@using stripfaces.Models
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Login - StreamFlix";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #2563eb;
+            --primary-blue-hover: #1d4ed8;
+            --gray-light: #f8fafc;
+            --gray-medium: #e2e8f0;
+            --gray-dark: #64748b;
+            --text-dark: #1e293b;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-blue);
+        }
+
+            .logo i {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+
+            .logo h1 {
+                font-size: 1.8rem;
+                font-weight: 700;
+            }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-medium);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+            .form-control:focus {
+                outline: none;
+                border-color: var(--primary-blue);
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            }
+
+        .input-icon {
+            position: relative;
+        }
+
+            .input-icon i {
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--gray-dark);
+            }
+
+            .input-icon input {
+                padding-left: 3rem;
+            }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 0.875rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+
+            .btn-primary:hover {
+                background: var(--primary-blue-hover);
+            }
+
+        .text-danger {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--gray-dark);
+        }
+
+            .form-footer a {
+                color: var(--primary-blue);
+                text-decoration: none;
+                font-weight: 500;
+            }
+
+                .form-footer a:hover {
+                    text-decoration: underline;
+                }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+            .remember-me input {
+                width: auto;
+            }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <i class="fas fa-play-circle"></i>
+                <h1>StreamFlix</h1>
+                <p style="color: var(--gray-dark); font-size: 0.9rem;">Welcome back! Please login to continue.</p>
+            </div>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Invalid login credentials
+                </div>
+            }
+
+            <form method="post" asp-action="Login">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label class="form-label">Username or Email</label>
+                    <div class="input-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="form-control" asp-for="UsernameOrEmail"
+                               placeholder="Enter username or email" required>
+                    </div>
+                    <span asp-validation-for="UsernameOrEmail" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" asp-for="Password"
+                               placeholder="Enter password" required>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group remember-me">
+                    <input type="checkbox" asp-for="RememberMe">
+                    <label>Remember me</label>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+
+            <div class="form-footer">
+                <p>Don't have an account? <a href="@Url.Action("Register", "Auth")">Register here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const username = document.querySelector('[name="UsernameOrEmail"]').value.trim();
+            const password = document.querySelector('[name="Password"]').value.trim();
+
+            if (!username || !password) {
+                e.preventDefault();
+                alert('Please fill in all fields');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+﻿@using stripfaces.Models
+@model List<User>
+
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>Manage Users</h1>
+    <a href="#" class="btn-primary">
+        <i class="fas fa-user-plus"></i> Add New User
+    </a>
+</div>
+
+<div class="card">
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: var(--gray-light);">
+                    <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--gray-medium);">ID</th>
+                    <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--gray-medium);">Username</th>
+                    <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--gray-medium);">Email</th>
+                    <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--gray-medium);">Role</th>
+                    <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--gray-medium);">Joined Date</th>
+                    <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--gray-medium);">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr style="border-bottom: 1px solid var(--gray-medium);">
+                        <td style="padding: 1rem;">@user.UserId</td>
+                        <td style="padding: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <div style="width: 36px; height: 36px; background: var(--primary-blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                    @user.Username[0]
+                                </div>
+                                @user.Username
+                            </div>
+                        </td>
+                        <td style="padding: 1rem;">@user.Email</td>
+                        <td style="padding: 1rem;">
+                            <span style="padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;
+                                      background: @(user.Role == "admin" ? "#fef3c7" : "#dbeafe");
+                                      color: @(user.Role == "admin" ? "#92400e" : "#1e40af");">
+                                @user.Role
+                            </span>
+                        </td>
+                        <td style="padding: 1rem;">@user.CreatedAt.ToString("MMM dd, yyyy")</td>
+                        <td style="padding: 1rem;">
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button style="padding: 0.5rem 1rem; font-size: 0.875rem; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 2rem;">
+    <h3 style="margin-bottom: 1rem;">User Statistics</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+        <div>
+            <p>Total Users: <strong>@Model.Count</strong></p>
+            <p>Admins: <strong>@Model.Count(u => u.Role == "admin")</strong></p>
+            <p>Regular Users: <strong>@Model.Count(u => u.Role == "user")</strong></p>
+        </div>
+        <div>
+            <p>New Users (This Month): <strong>12</strong></p>
+            <p>Active Users (Last 7 days): <strong>45</strong></p>
+        </div>
+    </div>
+</div>

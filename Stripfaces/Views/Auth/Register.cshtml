@@ -1,0 +1,242 @@
+﻿@using stripfaces.Models
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register - StreamFlix";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #2563eb;
+            --primary-blue-hover: #1d4ed8;
+            --gray-light: #f8fafc;
+            --gray-medium: #e2e8f0;
+            --gray-dark: #64748b;
+            --text-dark: #1e293b;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .register-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-blue);
+        }
+
+            .logo i {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+
+            .logo h1 {
+                font-size: 1.8rem;
+                font-weight: 700;
+            }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-medium);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+            .form-control:focus {
+                outline: none;
+                border-color: var(--primary-blue);
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            }
+
+        .input-icon {
+            position: relative;
+        }
+
+            .input-icon i {
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--gray-dark);
+            }
+
+            .input-icon input {
+                padding-left: 3rem;
+            }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 0.875rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+
+            .btn-primary:hover {
+                background: var(--primary-blue-hover);
+            }
+
+        .text-danger {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--gray-dark);
+        }
+
+            .form-footer a {
+                color: var(--primary-blue);
+                text-decoration: none;
+                font-weight: 500;
+            }
+
+                .form-footer a:hover {
+                    text-decoration: underline;
+                }
+
+        .password-requirements {
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-card">
+            <div class="logo">
+                <i class="fas fa-play-circle"></i>
+                <h1>Join StreamFlix</h1>
+                <p style="color: var(--gray-dark); font-size: 0.9rem;">Create your account to get started</p>
+            </div>
+
+            <form method="post" asp-action="Register">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <div class="input-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="form-control" asp-for="Username"
+                               placeholder="Enter username" required>
+                    </div>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                    <div class="password-requirements">3-50 characters, letters, numbers and underscore only</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <div class="input-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" class="form-control" asp-for="Email"
+                               placeholder="Enter email address" required>
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" asp-for="Password"
+                               placeholder="Enter password" required>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <div class="password-requirements">Minimum 6 characters</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <div class="input-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" asp-for="ConfirmPassword"
+                               placeholder="Confirm password" required>
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+
+            <div class="form-footer">
+                <p>Already have an account? <a href="@Url.Action("Login", "Auth")">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password match validation
+        document.querySelector('[name="ConfirmPassword"]').addEventListener('input', function() {
+            const password = document.querySelector('[name="Password"]').value;
+            const confirmPassword = this.value;
+
+            if (password !== confirmPassword) {
+                this.style.borderColor = '#dc2626';
+            } else {
+                this.style.borderColor = '#16a34a';
+            }
+        });
+    </script>
+</body>
+</html>

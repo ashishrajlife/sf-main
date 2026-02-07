@@ -1,0 +1,157 @@
+﻿@{
+    ViewData["Title"] = "StreamFlix - Video Streaming Platform";
+}
+
+<div class="hero-section">
+    <h1 class="hero-title">Welcome to StreamFlix</h1>
+    <p class="hero-subtitle">
+        Stream unlimited movies, TV shows, and exclusive content.
+        Watch anywhere. Cancel anytime.
+    </p>
+
+    @if (string.IsNullOrEmpty(Context.Session.GetString("UserId")))
+    {
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+            <a href="@Url.Action("Register", "Auth")" class="btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                <i class="fas fa-play-circle"></i> Start Your Free Trial
+            </a>
+            <a href="@Url.Action("Login", "Auth")" class="btn-login" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </a>
+        </div>
+    }
+    else
+    {
+        <div style="margin-top: 2rem;">
+            <a href="@Url.Action("Index", Context.Session.GetString("Role"))" class="btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+            </a>
+        </div>
+    }
+</div>
+
+<div class="features-grid">
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-play"></i>
+        </div>
+        <h3>Watch Anywhere</h3>
+        <p>Stream on your phone, tablet, laptop, and TV.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-download"></i>
+        </div>
+        <h3>Download & Go</h3>
+        <p>Download shows to watch offline.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-user-friends"></i>
+        </div>
+        <h3>Multiple Profiles</h3>
+        <p>Create profiles for different members.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-infinity"></i>
+        </div>
+        <h3>No Commitments</h3>
+        <p>Cancel online anytime.</p>
+    </div>
+</div>
+
+@if (string.IsNullOrEmpty(Context.Session.GetString("UserId")))
+{
+    <div style="text-align: center; margin-top: 4rem;">
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+            <h2 style="margin-bottom: 1rem;">Common Dashboard</h2>
+            <p style="color: var(--gray-dark); margin-bottom: 1.5rem;">
+                This is the public dashboard. Register or login to access personalized features.
+            </p>
+
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <div style="text-align: center;">
+                    <div style="width: 80px; height: 80px; background: var(--primary-blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem;">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Join Community</h4>
+                    <p style="font-size: 0.9rem;">Be part of our streaming community</p>
+                </div>
+
+                <div style="text-align: center;">
+                    <div style="width: 80px; height: 80px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem;">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4>Exclusive Content</h4>
+                    <p style="font-size: 0.9rem;">Access premium shows and movies</p>
+                </div>
+
+                <div style="text-align: center;">
+                    <div style="width: 80px; height: 80px; background: #8b5cf6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem;">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h4>Watch History</h4>
+                    <p style="font-size: 0.9rem;">Track what you've watched</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-medium);">
+                <p style="color: var(--gray-dark);">
+                    <i class="fas fa-info-circle"></i>
+                    Register now to unlock personalized recommendations, create watchlists, and get access to exclusive content.
+                </p>
+                <a href="@Url.Action("Register", "Auth")" class="btn-primary" style="margin-top: 1rem;">
+                    <i class="fas fa-user-plus"></i> Create Free Account
+                </a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div style="text-align: center; margin-top: 4rem;">
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+            <h2 style="margin-bottom: 1rem;">Welcome Back, @Context.Session.GetString("Username")!</h2>
+            <p style="color: var(--gray-dark);">
+                You're logged in as <strong>@Context.Session.GetString("Role")</strong>.
+                Click the button below to access your personalized dashboard.
+            </p>
+            <a href="@Url.Action("Index", Context.Session.GetString("Role"))" class="btn-primary" style="margin-top: 1rem;">
+                <i class="fas fa-tachometer-alt"></i> Go to @Context.Session.GetString("Role") Dashboard
+            </a>
+        </div>
+    </div>
+}
+
+<div style="margin-top: 4rem;">
+    <h2 style="text-align: center; margin-bottom: 2rem;">Most Popular This Week</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+        <div class="card" style="text-align: center;">
+            <div style="height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; margin-bottom: 1rem;"></div>
+            <h4>Action Packed</h4>
+            <p style="color: var(--gray-dark); font-size: 0.9rem;">Thriller • 2h 15m</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <div style="height: 120px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 8px; margin-bottom: 1rem;"></div>
+            <h4>Romantic Comedy</h4>
+            <p style="color: var(--gray-dark); font-size: 0.9rem;">Romance • 1h 45m</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <div style="height: 120px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 8px; margin-bottom: 1rem;"></div>
+            <h4>Sci-Fi Adventure</h4>
+            <p style="color: var(--gray-dark); font-size: 0.9rem;">Sci-Fi • 2h 30m</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <div style="height: 120px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 8px; margin-bottom: 1rem;"></div>
+            <h4>Documentary Series</h4>
+            <p style="color: var(--gray-dark); font-size: 0.9rem;">Documentary • 6 Episodes</p>
+        </div>
+    </div>
+</div>
