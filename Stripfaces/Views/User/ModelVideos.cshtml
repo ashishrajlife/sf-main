@@ -1,0 +1,85 @@
+﻿@model stripfaces.ViewModels.ModelVideosViewModel
+
+<h2>@Model.Model.Name Videos</h2>
+<p>@Model.Model.Bio</p>
+
+<div class="videos-grid">
+    @foreach (var video in Model.Videos.OrderByDescending(v => v.UploadedAt))
+    {
+        <div class="video-card">
+            <a href="@Url.Action("Watch", "User", new { id = video.VideoId })">
+                <div class="thumbnail">
+                    <img src="@(video.ThumbnailPath ?? "/images/default-thumbnail.jpg")" alt="@video.Title" />
+                    @if (video.Duration > 0)
+                    {
+                        <div class="duration">@TimeSpan.FromSeconds(video.Duration ?? 0).ToString(@"mm\:ss")</div>
+                    }
+                </div>
+                <h4>@video.Title</h4>
+                <p>@video.Views views • @video.UploadedAt.ToString("MMM dd, yyyy")</p>
+            </a>
+        </div>
+    }
+</div>
+
+@if (!Model.Videos.Any())
+{
+    <div class="alert alert-info">
+        No videos available for this model yet.
+    </div>
+}
+
+<style>
+    .videos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .video-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s;
+    }
+
+        .video-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+    .thumbnail {
+        position: relative;
+        height: 180px;
+        background-color: #000;
+    }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .duration {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 12px;
+    }
+
+    .video-card h4 {
+        margin: 10px;
+        font-size: 16px;
+    }
+
+    .video-card p {
+        margin: 0 10px 10px;
+        color: #666;
+        font-size: 14px;
+    }
+</style>

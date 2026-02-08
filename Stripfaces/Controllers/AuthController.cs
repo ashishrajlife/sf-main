@@ -108,6 +108,7 @@ namespace stripfaces.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
+
         private string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())

@@ -1,20 +1,41 @@
-using System.Diagnostics;
+// Controllers/HomeController.cs
 using Microsoft.AspNetCore.Mvc;
-using Stripfaces.Models;
+using Microsoft.EntityFrameworkCore;
+using stripfaces.Data;
+using stripfaces.Models;
 
-namespace Stripfaces.Controllers;
-
-public class HomeController : Controller
+namespace stripfaces.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public class HomeController : Controller
     {
-        _logger = logger;
-    }
+        private readonly ApplicationDbContext _context;
 
-    public IActionResult Index()
-    {
-        return View();
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            // Get all active models with their videos
+            var modelsWithVideos = await _context.Models
+                .Where(m => m.IsActive)
+                .Include(m => m.Videos.Where(v => v.IsApproved))
+                .OrderBy(m => m.Name)
+                .ToListAsync();
+
+            // Get featured videos
+            var featuredVideos = await _context.Videos
+                .Where(v => v.IsApproved && v.IsFeatured)
+                .Include(v => v.Model)
+                .OrderByDescending(v => v.UploadedAt)
+                .Take(6)
+                .ToListAsync();
+
+            ViewBag.FeaturedVideos = featuredVideos;
+            ViewBag.ModelsWithVideos = modelsWithVideos;
+
+            return View();
+        }
     }
 }

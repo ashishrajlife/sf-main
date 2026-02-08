@@ -1,0 +1,55 @@
+﻿@model stripfaces.Models.Video
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="video-container">
+    <h2>@Model.Title</h2>
+
+    <div class="video-player">
+        <video controls width="100%">
+            <source src="@Model.FilePath" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="video-info">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+            <div>
+                <h4 style="margin: 0;">Model: @Model.Model?.Name</h4>
+                <p style="color: #666; margin: 5px 0 0 0;">
+                    @Model.Views views • @Model.UploadedAt.ToString("MMM dd, yyyy")
+                </p>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <div class="video-description" style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+                <h4>Description</h4>
+                <p>@Model.Description</p>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .video-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .video-player {
+        margin: 20px 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+        .video-player video {
+            display: block;
+            background: #000;
+        }
+</style>

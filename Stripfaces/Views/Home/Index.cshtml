@@ -2,156 +2,162 @@
     ViewData["Title"] = "StreamFlix - Video Streaming Platform";
 }
 
+<!-- Hero Section -->
 <div class="hero-section">
     <h1 class="hero-title">Welcome to StreamFlix</h1>
     <p class="hero-subtitle">
-        Stream unlimited movies, TV shows, and exclusive content.
-        Watch anywhere. Cancel anytime.
+        Stream unlimited videos from your favorite models. Watch anywhere.
     </p>
-
-    @if (string.IsNullOrEmpty(Context.Session.GetString("UserId")))
-    {
-        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
-            <a href="@Url.Action("Register", "Auth")" class="btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">
-                <i class="fas fa-play-circle"></i> Start Your Free Trial
-            </a>
-            <a href="@Url.Action("Login", "Auth")" class="btn-login" style="padding: 1rem 2rem; font-size: 1.1rem;">
-                <i class="fas fa-sign-in-alt"></i> Sign In
-            </a>
-        </div>
-    }
-    else
-    {
-        <div style="margin-top: 2rem;">
-            <a href="@Url.Action("Index", Context.Session.GetString("Role"))" class="btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">
-                <i class="fas fa-tachometer-alt"></i> Go to Dashboard
-            </a>
-        </div>
-    }
 </div>
 
-<div class="features-grid">
-    <div class="feature-card">
-        <div class="feature-icon">
-            <i class="fas fa-play"></i>
-        </div>
-        <h3>Watch Anywhere</h3>
-        <p>Stream on your phone, tablet, laptop, and TV.</p>
-    </div>
-
-    <div class="feature-card">
-        <div class="feature-icon">
-            <i class="fas fa-download"></i>
-        </div>
-        <h3>Download & Go</h3>
-        <p>Download shows to watch offline.</p>
-    </div>
-
-    <div class="feature-card">
-        <div class="feature-icon">
-            <i class="fas fa-user-friends"></i>
-        </div>
-        <h3>Multiple Profiles</h3>
-        <p>Create profiles for different members.</p>
-    </div>
-
-    <div class="feature-card">
-        <div class="feature-icon">
-            <i class="fas fa-infinity"></i>
-        </div>
-        <h3>No Commitments</h3>
-        <p>Cancel online anytime.</p>
-    </div>
-</div>
-
-@if (string.IsNullOrEmpty(Context.Session.GetString("UserId")))
-{
-    <div style="text-align: center; margin-top: 4rem;">
-        <div class="card" style="max-width: 800px; margin: 0 auto;">
-            <h2 style="margin-bottom: 1rem;">Common Dashboard</h2>
-            <p style="color: var(--gray-dark); margin-bottom: 1.5rem;">
-                This is the public dashboard. Register or login to access personalized features.
-            </p>
-
-            <div style="display: flex; gap: 1rem; justify-content: center;">
-                <div style="text-align: center;">
-                    <div style="width: 80px; height: 80px; background: var(--primary-blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem;">
-                        <i class="fas fa-users"></i>
+<!-- Browse by Models -->
+<div class="section-container">
+    <h2>Browse by Model</h2>
+    <div class="models-grid">
+        @foreach (var model in ViewBag.ModelsWithVideos)
+        {
+            <div class="model-card">
+                <a href="@Url.Action("ModelVideos", "User", new { modelId = model.ModelId })">
+                    <div class="model-image">
+                        <img src="@(model.ProfilePic ?? "/images/default-model.jpg")"/>
                     </div>
-                    <h4>Join Community</h4>
-                    <p style="font-size: 0.9rem;">Be part of our streaming community</p>
-                </div>
-
-                <div style="text-align: center;">
-                    <div style="width: 80px; height: 80px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem;">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4>Exclusive Content</h4>
-                    <p style="font-size: 0.9rem;">Access premium shows and movies</p>
-                </div>
-
-                <div style="text-align: center;">
-                    <div style="width: 80px; height: 80px; background: #8b5cf6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem;">
-                        <i class="fas fa-history"></i>
-                    </div>
-                    <h4>Watch History</h4>
-                    <p style="font-size: 0.9rem;">Track what you've watched</p>
-                </div>
-            </div>
-
-            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-medium);">
-                <p style="color: var(--gray-dark);">
-                    <i class="fas fa-info-circle"></i>
-                    Register now to unlock personalized recommendations, create watchlists, and get access to exclusive content.
-                </p>
-                <a href="@Url.Action("Register", "Auth")" class="btn-primary" style="margin-top: 1rem;">
-                    <i class="fas fa-user-plus"></i> Create Free Account
+                    <h3>@(model.Name)</h3>
+                    <p>@(model.Videos?.Count ?? 0) Videos</p>
                 </a>
             </div>
-        </div>
-    </div>
-}
-else
-{
-    <div style="text-align: center; margin-top: 4rem;">
-        <div class="card" style="max-width: 800px; margin: 0 auto;">
-            <h2 style="margin-bottom: 1rem;">Welcome Back, @Context.Session.GetString("Username")!</h2>
-            <p style="color: var(--gray-dark);">
-                You're logged in as <strong>@Context.Session.GetString("Role")</strong>.
-                Click the button below to access your personalized dashboard.
-            </p>
-            <a href="@Url.Action("Index", Context.Session.GetString("Role"))" class="btn-primary" style="margin-top: 1rem;">
-                <i class="fas fa-tachometer-alt"></i> Go to @Context.Session.GetString("Role") Dashboard
-            </a>
-        </div>
-    </div>
-}
-
-<div style="margin-top: 4rem;">
-    <h2 style="text-align: center; margin-bottom: 2rem;">Most Popular This Week</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-        <div class="card" style="text-align: center;">
-            <div style="height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; margin-bottom: 1rem;"></div>
-            <h4>Action Packed</h4>
-            <p style="color: var(--gray-dark); font-size: 0.9rem;">Thriller • 2h 15m</p>
-        </div>
-
-        <div class="card" style="text-align: center;">
-            <div style="height: 120px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 8px; margin-bottom: 1rem;"></div>
-            <h4>Romantic Comedy</h4>
-            <p style="color: var(--gray-dark); font-size: 0.9rem;">Romance • 1h 45m</p>
-        </div>
-
-        <div class="card" style="text-align: center;">
-            <div style="height: 120px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 8px; margin-bottom: 1rem;"></div>
-            <h4>Sci-Fi Adventure</h4>
-            <p style="color: var(--gray-dark); font-size: 0.9rem;">Sci-Fi • 2h 30m</p>
-        </div>
-
-        <div class="card" style="text-align: center;">
-            <div style="height: 120px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 8px; margin-bottom: 1rem;"></div>
-            <h4>Documentary Series</h4>
-            <p style="color: var(--gray-dark); font-size: 0.9rem;">Documentary • 6 Episodes</p>
-        </div>
+        }
     </div>
 </div>
+
+<!-- Featured Videos -->
+@if (ViewBag.FeaturedVideos != null && ViewBag.FeaturedVideos.Count > 0)
+{
+    <div class="section-container">
+        <h2>Featured Videos</h2>
+        <div class="videos-grid">
+            @foreach (var video in ViewBag.FeaturedVideos)
+            {
+                <div class="video-card">
+                    <a href="@Url.Action("Watch", "User", new { id = video.VideoId })">
+                        <div class="thumbnail">
+                            <img src="@(video.ThumbnailPath ?? "/images/default-thumbnail.jpg")" alt="@video.Title" />
+                            <div class="duration">@TimeSpan.FromSeconds(video.Duration ?? 0).ToString(@"mm\:ss")</div>
+                        </div>
+                        <h4>@video.Title</h4>
+                        <p class="model-name">@video.Model?.Name</p>
+                        <p>@video.Views views • @video.UploadedAt.ToString("MMM dd")</p>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<style>
+.section-container {
+    margin: 3rem 0;
+}
+
+.models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.model-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s;
+    background: white;
+}
+
+.model-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-color: #3b82f6;
+}
+
+.model-image img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid #f1f5f9;
+}
+
+.model-card h3 {
+    margin: 10px 0 5px;
+    color: #1e293b;
+}
+
+.model-card p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.video-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+
+.video-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.thumbnail {
+    position: relative;
+    height: 160px;
+    background: #000;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.duration {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.video-card h4 {
+    margin: 12px 15px 5px;
+    font-size: 16px;
+    color: #1e293b;
+}
+
+.model-name {
+    margin: 0 15px;
+    color: #3b82f6;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.video-card p {
+    margin: 0 15px 12px;
+    color: #64748b;
+    font-size: 13px;
+}
+</style>
