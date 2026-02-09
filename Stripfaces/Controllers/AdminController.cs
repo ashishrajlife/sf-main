@@ -73,82 +73,6 @@ namespace stripfaces.Controllers
             return View(users);
         }
 
-        //// GET: /Admin/GetVideos (AJAX endpoint for videos list)
-        //[HttpGet]
-        //[Route("GetVideos")]
-        //public async Task<IActionResult> GetVideos()
-        //{
-        //    if (!IsAuthenticated() || !IsAdmin())
-        //        return Json(new { success = false, message = "Unauthorized" });
-
-        //    var videos = await _context.Videos
-        //        .Include(v => v.Model)
-        //        .Include(v => v.UploadedBy)
-        //        .OrderByDescending(v => v.UploadedAt)
-        //        .Select(v => new
-        //        {
-        //            v.VideoId,
-        //            v.Title,
-        //            v.FilePath,
-        //            Thumbnail = v.ThumbnailPath ?? "/images/default-thumbnail.jpg",
-        //            ModelName = v.Model.Name,
-        //            ModelId = v.Model.ModelId,
-        //            Views = v.Views,
-        //            UploadedAt = v.UploadedAt.ToString("MMM dd, yyyy HH:mm"),
-        //            IsApproved = v.IsApproved,
-        //            IsFeatured = v.IsFeatured,
-        //            Duration = v.Duration.HasValue ?
-        //                TimeSpan.FromSeconds(v.Duration.Value).ToString(@"mm\:ss") : "00:00"
-        //        })
-        //        .ToListAsync();
-
-        //    return Json(new { success = true, data = videos });
-        //}
-
-        //// DELETE: /Admin/DeleteVideo/{id} (AJAX)
-        //[HttpPost]
-        //[Route("DeleteVideo/{id}")]
-        //public async Task<IActionResult> DeleteVideo(int id)
-        //{
-        //    if (!IsAuthenticated() || !IsAdmin())
-        //        return Json(new { success = false, message = "Unauthorized" });
-
-        //    try
-        //    {
-        //        var video = await _context.Videos.FindAsync(id);
-        //        if (video == null)
-        //            return Json(new { success = false, message = "Video not found" });
-
-        //        // Delete physical file (optional)
-        //        // _fileUploadService.DeleteVideo(video.FilePath);
-
-        //        _context.Videos.Remove(video);
-        //        await _context.SaveChangesAsync();
-
-        //        return Json(new { success = true, message = "Video deleted successfully" });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = ex.Message });
-        //    }
-        //}
-
-        //// GET: /Admin/GetModels (AJAX - for dropdown)
-        //[HttpGet]
-        //[Route("GetModels")]
-        //public async Task<IActionResult> GetModels()
-        //{
-        //    if (!IsAuthenticated() || !IsAdmin())
-        //        return Json(new { success = false, message = "Unauthorized" });
-
-        //    var models = await _context.Models
-        //        .Where(m => m.IsActive)
-        //        .Select(m => new { m.ModelId, m.Name })
-        //        .ToListAsync();
-
-        //    return Json(new { success = true, data = models });
-        //}
-
         [HttpPost]
         [Route("UploadVideo")]
         [RequestSizeLimit(2147483648)] // 2GB limit
@@ -159,7 +83,6 @@ namespace stripfaces.Controllers
 
             try
             {
-                // Clear ModelState for Models property since we don't want to bind it
                 ModelState.Remove("Models");
 
                 if (ModelState.IsValid)
@@ -202,7 +125,7 @@ namespace stripfaces.Controllers
                         Tags = model.Tags,
                         IsFeatured = model.IsFeatured,
                         FileSize = model.VideoFile.Length,
-                        IsApproved = true, // Auto-approve for admin
+                        IsApproved = true,
                         UploadedAt = DateTime.Now
                     };
 
@@ -238,7 +161,7 @@ namespace stripfaces.Controllers
             }
         }
 
-        // GET: /Admin/GetVideos (FIXED property names)
+        // GET: /Admin/GetVideos
         [HttpGet]
         [Route("GetVideos")]
         public async Task<IActionResult> GetVideos()
@@ -287,7 +210,7 @@ namespace stripfaces.Controllers
             }
         }
 
-        // DELETE: /Admin/DeleteVideo/{id} (FIXED - with file deletion)
+        // DELETE
         [HttpPost]
         [Route("DeleteVideo/{id}")]
         public async Task<IActionResult> DeleteVideo(int id)
@@ -333,7 +256,6 @@ namespace stripfaces.Controllers
             }
         }
 
-        // GET: /Admin/GetModels (FIXED property names)
         [HttpGet]
         [Route("GetModels")]
         public async Task<IActionResult> GetModels()
@@ -360,7 +282,7 @@ namespace stripfaces.Controllers
         }
 
 
-        // GET: /Admin/GetAllModels (for listing models)
+        // GET: for listing models
         [HttpGet]
         [Route("GetAllModels")]
         public async Task<IActionResult> GetAllModels()

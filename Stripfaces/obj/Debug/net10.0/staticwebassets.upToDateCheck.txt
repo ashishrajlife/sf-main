@@ -58,6 +58,7 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\uploads\profilepicture\a3c09f82-a9db-4fd0-a6a5-864780d38b1f.jpg
 E:\sfc.com-main-git\sf-main\Stripfaces\wwwroot\css\site.css
 E:\sfc.com-main-git\sf-main\Stripfaces\wwwroot\favicon.ico
 E:\sfc.com-main-git\sf-main\Stripfaces\wwwroot\js\site.js
