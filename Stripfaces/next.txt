@@ -1,0 +1,3 @@
+﻿watch.cshtml me commments section add krna hai 
+AdminVideo controller me comments Db table update krna 
+comments aur like table banana hai
