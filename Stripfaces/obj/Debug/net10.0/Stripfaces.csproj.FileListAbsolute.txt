@@ -274,4 +274,3 @@ E:\sfc.com-main-git\sf-main\Stripfaces\obj\Debug\net10.0\refint\Stripfaces.dll
 E:\sfc.com-main-git\sf-main\Stripfaces\obj\Debug\net10.0\Stripfaces.pdb
 E:\sfc.com-main-git\sf-main\Stripfaces\obj\Debug\net10.0\Stripfaces.genruntimeconfig.cache
 E:\sfc.com-main-git\sf-main\Stripfaces\obj\Debug\net10.0\ref\Stripfaces.dll
-E:\sfc.com-main-git\sf-main\Stripfaces\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

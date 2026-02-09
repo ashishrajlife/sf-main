@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StripFaces - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ================================
+           STRIPFACES DARK GOLD THEME
+           MATCHES REGISTER UI 1:1
+        ================================ */
+
         * {
             margin: 0;
             padding: 0;
@@ -12,505 +18,1473 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body {
-            background: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
+        :root {
+            --black-bg: #0a0a0a;
+            --black-card: #1a1a1a;
+            --black-border: #333;
+            --yellow-primary: #FFD700;
+            --yellow-hover: #FFED4E;
+            --yellow-dark: #E6C200;
+            --text-light: #f0f0f0;
+            --text-muted: #a0a0a0;
+            --error-red: #ff6b6b;
+            --success-green: #4ade80;
+            --shadow: 0 4px 20px rgba(255,215,0,0.15);
         }
 
+        body {
+            background: var(--black-bg);
+            color: var(--text-light);
+        }
+
+        /* Layout */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+            width: 100%;
         }
 
+        /* Header */
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e1e5eb;
+            border-bottom: 1px solid var(--black-border);
+            padding: 20px 0;
+            margin-bottom: 25px;
         }
 
         .logo {
+            color: var(--yellow-primary);
+            font-size: 24px;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #4a6cf7;
         }
 
             .logo i {
+                color: var(--yellow-primary);
                 font-size: 28px;
             }
 
+        /* Tabs */
         .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            background: white;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            background: var(--black-card);
+            box-shadow: var(--shadow);
         }
 
         .tab-btn {
-            padding: 12px 24px;
-            border: none;
-            background: transparent;
-            color: #666;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            color: var(--text-muted);
         }
 
             .tab-btn.active {
-                background: #4a6cf7;
-                color: white;
+                background: linear-gradient(135deg, var(--yellow-primary), var(--yellow-dark));
+                color: #000;
             }
 
             .tab-btn:hover:not(.active) {
-                background: #f0f2f5;
+                background: rgba(255,215,0,0.1);
             }
 
-        .tab-content {
-            display: none;
-        }
-
-            .tab-content.active {
-                display: block;
-            }
-
-        .upload-section {
-            background: white;
+        /* Cards / Sections */
+        .upload-section,
+        .management-section {
+            background: var(--black-card);
+            border-radius: 14px;
+            border: 1px solid var(--black-border);
+            box-shadow: var(--shadow);
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
         .section-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 25px;
-            color: #333;
+            color: var(--yellow-primary);
+            margin: 0 0 25px 0;
+            font-size: 22px;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
             .section-title i {
-                color: #4a6cf7;
+                color: var(--yellow-primary);
+                font-size: 24px;
             }
 
-        .upload-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+        /* Forms */
+        .form-group label {
+            color: var(--yellow-primary);
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        .form-control,
+        .search-box,
+        textarea.form-control {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--black-border);
+            color: var(--text-light);
         }
 
-            .form-group label {
-                display: block;
-                margin-bottom: 8px;
-                font-weight: 600;
-                color: #555;
+            .form-control::placeholder {
+                color: var(--text-muted);
             }
-
-            .form-group.required label::after {
-                content: " *";
-                color: #ff4757;
-            }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border 0.3s ease;
-        }
 
             .form-control:focus {
-                outline: none;
-                border-color: #4a6cf7;
-                box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+                border-color: var(--yellow-primary);
+                box-shadow: 0 0 0 3px rgba(255,215,0,0.15);
             }
 
-        textarea.form-control {
-            min-height: 100px;
-            resize: vertical;
-        }
-
+        /* File Upload */
         .file-upload-area {
-            border: 2px dashed #ddd;
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #fafbfc;
+            background: rgba(255,255,255,0.03);
+            border-color: var(--black-border);
         }
 
             .file-upload-area:hover {
-                border-color: #4a6cf7;
-                background: #f8f9ff;
+                border-color: var(--yellow-primary);
+                background: rgba(255,215,0,0.05);
             }
 
             .file-upload-area i {
-                font-size: 40px;
-                color: #4a6cf7;
-                margin-bottom: 15px;
-            }
-
-            .file-upload-area p {
-                margin: 5px 0;
-                color: #666;
+                color: var(--yellow-primary);
             }
 
         .file-name {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #4a6cf7;
-            font-weight: 500;
+            color: var(--yellow-primary);
         }
 
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-
-        .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-cancel {
-            background: #f8f9fa;
-            color: #666;
-            border: 1px solid #ddd;
-        }
-
-            .btn-cancel:hover {
-                background: #e9ecef;
-            }
-
+        /* Buttons */
         .btn-primary {
-            background: #4a6cf7;
-            color: white;
+            background: linear-gradient(135deg, var(--yellow-primary), var(--yellow-dark));
+            color: #000;
         }
 
             .btn-primary:hover {
-                background: #3a5ce5;
+                background: linear-gradient(135deg, var(--yellow-hover), var(--yellow-primary));
             }
 
-            .btn-primary:disabled {
-                background: #a0b0ff;
-                cursor: not-allowed;
-            }
-
-        .management-section {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            overflow: hidden;
+        .btn-cancel {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--black-border);
         }
 
+            .btn-cancel:hover {
+                background: rgba(255,255,255,0.05);
+            }
+
+        /* Tables */
+        .video-table th {
+            background: #111;
+            color: var(--yellow-primary);
+            border-bottom: 1px solid var(--black-border);
+        }
+
+        .video-table td {
+            border-bottom: 1px solid var(--black-border);
+        }
+
+        .video-table tr:hover {
+            background: rgba(255,215,0,0.05);
+        }
+
+        .video-info p {
+            color: var(--text-muted);
+        }
+
+        /* Status badges */
+        .status-active {
+            background: rgba(74,222,128,0.15);
+            color: var(--success-green);
+        }
+
+        .status-inactive {
+            background: rgba(255,107,107,0.15);
+            color: var(--error-red);
+        }
+
+        /* Action Buttons */
+        .btn-edit {
+            background: var(--yellow-primary);
+            color: #000;
+        }
+
+            .btn-edit:hover {
+                background: var(--yellow-hover);
+            }
+
+        .btn-delete {
+            background: var(--error-red);
+        }
+
+            .btn-delete:hover {
+                background: #ff4c4c;
+            }
+
+        /* Modals */
+        .modal-content {
+            background: var(--black-card);
+            border: 1px solid var(--black-border);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--black-border);
+        }
+
+            .modal-header h3 {
+                color: var(--yellow-primary);
+            }
+
+        .modal-close {
+            color: var(--text-muted);
+        }
+
+            .modal-close:hover {
+                background: rgba(255,255,255,0.05);
+            }
+
+        /* Notifications */
+        .notification.success {
+            background: var(--success-green);
+        }
+
+        .notification.error {
+            background: var(--error-red);
+        }
+
+        /* Empty State */
+        .empty-state {
+            color: var(--text-muted);
+            text-align: center;
+            padding: 60px 25px;
+        }
+
+            .empty-state i {
+                color: var(--yellow-primary);
+                opacity: 0.4;
+                font-size: 64px;
+                margin-bottom: 20px;
+                display: block;
+            }
+
+            .empty-state h3 {
+                color: var(--text-light);
+                margin: 20px 0 12px;
+                font-size: 24px;
+                font-weight: 600;
+            }
+
+            .empty-state p {
+                margin: 0;
+                font-size: 14px;
+            }
+
+        /* Upload Form Layout */
+        .upload-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 0;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            width: 100%;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        .form-group.required label::after {
+            content: " *";
+            color: var(--error-red);
+        }
+
+        .form-control,
+        .search-box {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--black-border);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-light);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--yellow-primary);
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.15);
+            background: rgba(255,255,255,0.08);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        /* File Upload Area */
+        .file-upload-area {
+            border: 2px dashed var(--black-border);
+            border-radius: 12px;
+            padding: 28px 20px;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(255,255,255,0.03);
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--yellow-primary);
+            background: rgba(255,215,0,0.05);
+        }
+
+        .file-upload-area i {
+            font-size: 44px;
+            color: var(--yellow-primary);
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .file-upload-area p {
+            margin: 8px 0;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .file-upload-area .text-muted {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .file-name {
+            color: var(--yellow-primary);
+            margin-top: 10px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--black-border);
+        }
+
+        /* Tabs Styling */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            background: var(--black-card);
+            border: 1px solid var(--black-border);
+            flex-wrap: wrap;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 11px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: var(--text-muted);
+            white-space: nowrap;
+            min-width: fit-content;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255,215,0,0.1);
+            color: var(--text-light);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--yellow-primary), var(--yellow-dark));
+            color: #000;
+            font-weight: 700;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Table Styling */
         .table-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 30px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 30px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         .table-actions {
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            flex: 1;
+            min-width: 280px;
         }
 
         .search-box {
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            width: 250px;
-            font-size: 14px;
+            flex: 1;
+            min-width: 200px;
         }
 
-        .video-table {
+        .video-table,
+        .model-table {
             width: 100%;
             border-collapse: collapse;
+            margin: 20px 0;
         }
 
-            .video-table th {
-                background: #f8f9fa;
-                padding: 15px;
-                text-align: left;
-                font-weight: 600;
-                color: #555;
-                border-bottom: 1px solid #eee;
-            }
-
-            .video-table td {
-                padding: 15px;
-                border-bottom: 1px solid #eee;
-                vertical-align: middle;
-            }
-
-            .video-table tr:hover {
-                background: #f8f9ff;
-            }
-
-        .video-thumbnail {
-            width: 120px;
-            height: 68px;
-            border-radius: 6px;
-            object-fit: cover;
+        .video-table thead,
+        .model-table thead {
+            background: rgba(0,0,0,0.5);
         }
 
-        .video-info h4 {
+        .video-table th,
+        .model-table th {
+            padding: 16px 15px;
+            text-align: left;
+            color: var(--yellow-primary);
+            font-weight: 700;
+            border-bottom: 2px solid var(--black-border);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .video-table td,
+        .model-table td {
+            padding: 16px 15px;
+            border-bottom: 1px solid var(--black-border);
+            color: var(--text-light);
+        }
+
+        .video-table tbody tr,
+        .model-table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .video-table tbody tr:hover,
+        .model-table tbody tr:hover {
+            background: rgba(255,215,0,0.05);
+        }
+
+        /* Video/Model Info */
+        .video-info,
+        .model-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .video-info h4,
+        .model-info h4 {
+            color: var(--yellow-primary);
+            margin: 0;
             font-weight: 600;
-            margin-bottom: 5px;
         }
 
-        .video-info p {
-            color: #666;
+        .video-info p,
+        .model-info p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .video-info small {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* Thumbnails */
+        .video-thumbnail,
+        .model-profile-pic {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--black-border);
+        }
+
+        .model-profile-pic {
+            border-radius: 50%;
+        }
+
+        /* Card-based layout for mobile tables */
+        .table-view-toggle {
+            display: none;
+        }
+
+        .video-card,
+        .model-card {
+            display: none;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--black-border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .video-card:hover,
+        .model-card:hover {
+            background: rgba(255,215,0,0.05);
+            border-color: var(--yellow-primary);
+        }
+
+        .card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .card-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .card-image {
+            flex-shrink: 0;
+        }
+
+        .card-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-label {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .card-value {
+            color: var(--text-light);
             font-size: 14px;
+            font-weight: 500;
+        }
+
+        .card-title {
+            color: var(--yellow-primary);
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        .card-subtitle {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin: 4px 0;
+        }
+
+        .card-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--black-border);
+        }
+
+        .card-actions .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 9px 12px;
+            font-size: 12px;
+        }
+
+        /* Status Badges */
+        .status-badge,
+        .status-active,
+        .status-inactive {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active {
+            background: rgba(74,222,128,0.15);
+            color: var(--success-green);
+        }
+
+        .status-inactive {
+            background: rgba(255,107,107,0.15);
+            color: var(--error-red);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn,
+        .btn-edit,
+        .btn-delete,
+        .btn-toggle,
+        .btn-cancel,
+        .btn-primary {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:disabled,
+        .btn-delete:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--yellow-primary), var(--yellow-dark));
+            color: #000;
+            font-weight: 700;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--yellow-hover), var(--yellow-primary));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255,215,0,0.2);
+        }
+
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid var(--black-border);
+            color: var(--text-muted);
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-light);
+        }
+
+        .btn-edit {
+            background: var(--yellow-primary);
+            color: #000;
+        }
+
+        .btn-edit:hover {
+            background: var(--yellow-hover);
+            transform: translateY(-2px);
         }
 
         .btn-delete {
-            background: #ff4757;
+            background: var(--error-red);
             color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s ease;
         }
 
-            .btn-delete:hover {
-                background: #ff3742;
-            }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #888;
+        .btn-delete:hover:not(:disabled) {
+            background: #ff4c4c;
+            transform: translateY(-2px);
         }
 
-            .empty-state i {
-                font-size: 60px;
-                margin-bottom: 20px;
-                opacity: 0.5;
-            }
+        .btn-toggle {
+            background: var(--success-green);
+            color: #000;
+        }
 
+        .btn-toggle:hover {
+            background: #5cd96e;
+            transform: translateY(-2px);
+        }
+
+        .btn-toggle.inactive {
+            background: var(--error-red);
+            color: white;
+        }
+
+        /* Notifications */
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 15px 20px;
+            padding: 16px 24px;
             border-radius: 8px;
-            color: white;
             font-weight: 600;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10000;
             animation: slideIn 0.3s ease;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            font-size: 14px;
         }
 
         .notification.success {
-            background: #10b981;
+            background: var(--success-green);
+            color: white;
         }
 
         .notification.error {
-            background: #ff4757;
+            background: var(--error-red);
+            color: white;
         }
-        /* Model Management Styles */
-.model-profile-pic {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #e2e8f0;
-}
 
-.status-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 600;
-}
+        @@keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
 
-.status-active {
-    background-color: #d1fae5;
-    color: #065f46;
-}
+        @@keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
 
-.status-inactive {
-    background-color: #fee2e2;
-    color: #991b1b;
-}
+        /* Modal Styling */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
 
-.btn-toggle {
-    background: #f59e0b;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: background 0.3s ease;
-}
+        .modal-overlay.active {
+            display: flex;
+        }
 
-.btn-toggle:hover {
-    background: #d97706;
-}
+        .modal-content {
+            background: var(--black-card);
+            border: 1px solid var(--black-border);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
 
-.btn-toggle.inactive {
-    background: #6b7280;
-}
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            border-bottom: 1px solid var(--black-border);
+        }
 
-.btn-toggle.inactive:hover {
-    background: #4b5563;
-}
+        .modal-header h3 {
+            color: var(--yellow-primary);
+            margin: 0;
+            font-size: 20px;
+        }
 
-.model-info h4 {
-    font-weight: 600;
-    margin-bottom: 5px;
-}
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.2s ease;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.model-info p {
-    color: #666;
-    font-size: 13px;
-    line-height: 1.4;
-}
+        .modal-close:hover {
+            color: var(--text-light);
+            transform: rotate(90deg);
+        }
 
-.text-muted {
-    color: #94a3b8 !important;
-    font-size: 13px;
-}
-/* Modal Styles */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
+        .modal-body {
+            padding: 24px;
+        }
 
-.modal-content {
-    background: white;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-}
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding: 24px;
+            border-top: 1px solid var(--black-border);
+        }
 
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 30px;
-    border-bottom: 1px solid #e2e8f0;
-}
+        /* Responsive Design */
+        @@media (max-width: 1200px) {
+            .container {
+                padding: 18px;
+            }
 
-.modal-header h3 {
-    margin: 0;
-    color: #1e293b;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+            .upload-form {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
 
-.modal-header h3 i {
-    color: #4a6cf7;
-}
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
 
-.modal-close {
-    background: none;
-    border: none;
-    font-size: 28px;
-    color: #64748b;
-    cursor: pointer;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
+            .table-actions {
+                width: 100%;
+                min-width: unset;
+            }
+        }
 
-.modal-close:hover {
-    background: #f1f5f9;
-    color: #475569;
-}
+        @@media (max-width: 992px) {
+            .video-table,
+            .model-table {
+                display: none;
+            }
 
-.modal-body {
-    padding: 30px;
-}
+            .video-card,
+            .model-card {
+                display: block;
+            }
 
-/* Edit button styles */
-.btn-edit {
-    background: #4a6cf7;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: background 0.3s ease;
-}
+            .table-view-toggle {
+                display: block;
+                margin-bottom: 15px;
+                text-align: center;
+            }
 
-.btn-edit:hover {
-    background: #3a5ce5;
-}
+            .toggle-view-btn {
+                padding: 8px 16px;
+                background: rgba(255,215,0,0.1);
+                color: var(--yellow-primary);
+                border: 1px solid var(--yellow-primary);
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: 600;
+                transition: all 0.2s ease;
+            }
 
-.btn-edit i {
-    margin-right: 5px;
-}
+            .toggle-view-btn:hover {
+                background: var(--yellow-primary);
+                color: #000;
+            }
+        }
 
-/* Action buttons container */
-.action-buttons {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
+        @@media (max-width: 768px) {
+            .container {
+                padding: 12px;
+            }
 
-/* Disabled button style */
-.btn-delete:disabled {
-    background: #94a3b8;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-     
+            .header {
+                padding: 15px 0;
+                margin-bottom: 20px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .logo i {
+                font-size: 24px;
+            }
+
+            .tabs {
+                flex-direction: row;
+                gap: 8px;
+                padding: 12px;
+                overflow-x: auto;
+                margin-bottom: 20px;
+            }
+
+            .tab-btn {
+                padding: 10px 14px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+
+            .tab-content {
+                padding: 0;
+            }
+
+            .upload-section,
+            .management-section {
+                padding: 18px;
+                border-radius: 10px;
+            }
+
+            .section-title {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+
+            .section-title i {
+                font-size: 20px;
+            }
+
+            .upload-form {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                margin: 0;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .form-group label {
+                font-size: 13px;
+                margin-bottom: 8px;
+            }
+
+            .form-control,
+            .search-box {
+                padding: 11px 12px;
+                font-size: 13px;
+            }
+
+            textarea.form-control {
+                min-height: 100px;
+            }
+
+            .file-upload-area {
+                padding: 20px;
+                border-radius: 10px;
+            }
+
+            .file-upload-area i {
+                font-size: 36px;
+                margin-bottom: 12px;
+            }
+
+            .file-upload-area p {
+                font-size: 12px;
+            }
+
+            .file-name {
+                font-size: 12px;
+                margin-top: 8px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+                gap: 10px;
+                margin-top: 25px;
+                padding-top: 15px;
+            }
+
+            .btn,
+            .btn-edit,
+            .btn-delete,
+            .btn-toggle,
+            .btn-primary,
+            .btn-cancel {
+                padding: 10px 14px;
+                font-size: 12px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .table-header {
+                flex-direction: column;
+                align-items: stretched;
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+
+            .table-header .section-title {
+                width: 100%;
+                margin-bottom: 0;
+            }
+
+            .table-actions {
+                width: 100%;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .video-table,
+            .model-table {
+                font-size: 11px;
+                margin: 15px 0;
+                display: none;
+            }
+
+            .video-table thead,
+            .model-table thead {
+                display: none;
+            }
+
+            .video-table th,
+            .model-table th {
+                padding: 12px 8px;
+                font-size: 11px;
+            }
+
+            .video-table td,
+            .model-table td {
+                padding: 10px 8px;
+            }
+
+            .video-thumbnail,
+            .model-profile-pic {
+                width: 60px;
+                height: 60px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .video-card,
+            .model-card {
+                display: block;
+            }
+
+            .modal-content {
+                width: 95%;
+                border-radius: 10px;
+            }
+
+            .modal-header {
+                padding: 18px;
+            }
+
+            .modal-header h3 {
+                font-size: 18px;
+            }
+
+            .modal-body {
+                padding: 18px;
+            }
+
+            .modal-footer {
+                padding: 18px;
+                flex-direction: column-reverse;
+                gap: 10px;
+            }
+
+            .empty-state {
+                padding: 40px 15px;
+            }
+
+            .empty-state i {
+                font-size: 48px;
+                margin-bottom: 15px;
+            }
+
+            .empty-state h3 {
+                font-size: 20px;
+                margin: 15px 0 8px;
+            }
+
+            .card-image img {
+                width: 70px;
+                height: 70px;
+            }
+
+            .card-actions {
+                margin-top: 12px;
+                padding-top: 12px;
+            }
+
+            .card-actions .btn {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+
+        @@media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 12px 0;
+                margin-bottom: 15px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo i {
+                font-size: 20px;
+            }
+
+            .tabs {
+                padding: 10px;
+                margin-bottom: 15px;
+                gap: 6px;
+            }
+
+            .tab-btn {
+                padding: 8px 12px;
+                font-size: 11px;
+                min-width: fit-content;
+            }
+
+            .upload-section,
+            .management-section {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .section-title {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+            .form-control,
+            .search-box {
+                padding: 10px 11px;
+                font-size: 12px;
+            }
+
+            .btn,
+            .btn-edit,
+            .btn-delete,
+            .btn-toggle,
+            .btn-primary,
+            .btn-cancel {
+                padding: 9px 12px;
+                font-size: 11px;
+            }
+
+            .video-table,
+            .model-table {
+                font-size: 10px;
+            }
+
+            .video-table th,
+            .model-table th {
+                padding: 10px 6px;
+                font-size: 10px;
+            }
+
+            .video-table td,
+            .model-table td {
+                padding: 8px 6px;
+            }
+
+            .notification {
+                top: 15px;
+                right: 15px;
+                left: 15px;
+                max-width: unset;
+                padding: 14px 16px;
+                font-size: 13px;
+            }
+
+            .card-row {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .card-content {
+                width: 100%;
+            }
+
+            .video-card,
+            .model-card {
+                padding: 14px;
+                margin-bottom: 12px;
+            }
+
+            .video-card .card-row:first-child,
+            .model-card .card-row:first-child {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .card-image {
+                margin-bottom: 8px;
+            }
+
+            .card-image img {
+                width: 60px;
+                height: 60px;
+            }
+
+            .card-title {
+                font-size: 14px;
+            }
+
+            .card-actions .btn {
+                padding: 8px 10px;
+                font-size: 11px;
+            }
+
+            .table-actions {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+                gap: 10px;
+            }
+
+            .modal-content {
+                width: 98%;
+            }
+
+            .modal-header {
+                padding: 16px;
+            }
+
+            .modal-body {
+                padding: 16px;
+                max-height: calc(100vh - 120px);
+                overflow-y: auto;
+            }
+
+            .modal-footer {
+                padding: 16px;
+                flex-direction: column-reverse;
+                gap: 8px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .upload-form {
+                gap: 20px;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .container {
+                padding: 8px;
+            }
+
+            .header {
+                padding: 10px 0;
+                margin-bottom: 12px;
+            }
+
+            .logo {
+                font-size: 16px;
+            }
+
+            .logo i {
+                font-size: 18px;
+            }
+
+            .tabs {
+                padding: 8px;
+                margin-bottom: 12px;
+                gap: 4px;
+                overflow-x: auto;
+            }
+
+            .tab-btn {
+                padding: 7px 10px;
+                font-size: 10px;
+            }
+
+            .upload-section,
+            .management-section {
+                padding: 12px;
+                border-radius: 8px;
+            }
+
+            .section-title {
+                font-size: 14px;
+                margin-bottom: 12px;
+            }
+
+            .form-control,
+            .search-box {
+                padding: 9px 10px;
+                font-size: 11px;
+            }
+
+            .btn,
+            .btn-edit,
+            .btn-delete,
+            .btn-toggle,
+            .btn-primary,
+            .btn-cancel {
+                padding: 8px 10px;
+                font-size: 10px;
+            }
+
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: unset;
+                padding: 12px 14px;
+                font-size: 12px;
+            }
+
+            .card-row {
+                gap: 6px;
+            }
+
+            .video-card,
+            .model-card {
+                padding: 12px;
+                margin-bottom: 10px;
+            }
+
+            .card-image img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .card-title {
+                font-size: 13px;
+            }
+
+            .card-value,
+            .card-subtitle {
+                font-size: 12px;
+            }
+
+            .card-actions {
+                margin-top: 10px;
+                padding-top: 10px;
+            }
+
+            .card-actions .btn {
+                padding: 7px 8px;
+                font-size: 10px;
+            }
+
+            .table-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .form-actions {
+                gap: 8px;
+                margin-top: 20px;
+            }
+
+            .modal-header {
+                padding: 12px;
+            }
+
+            .modal-header h3 {
+                font-size: 16px;
+            }
+
+            .modal-body {
+                padding: 12px;
+            }
+
+            .modal-footer {
+                padding: 12px;
+            }
+
+            .form-group {
+                margin-bottom: 12px;
+            }
+
+            .form-group label {
+                font-size: 12px;
+            }
+
+            textarea.form-control {
+                min-height: 80px;
+            }
+
+            .file-upload-area {
+                padding: 16px;
+                border-radius: 8px;
+            }
+
+            .file-upload-area i {
+                font-size: 30px;
+                margin-bottom: 8px;
+            }
+
+            .file-upload-area p {
+                font-size: 11px;
+            }
+
+            .file-name {
+                font-size: 10px;
+                margin-top: 6px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+
         <!-- Header -->
         <div class="header">
             <div class="logo">
@@ -520,7 +1494,6 @@
         </div>
 
         <!-- Tabs -->
-        <!-- Tabs -->
         <div class="tabs">
             <button class="tab-btn active" data-tab="upload">Upload New Video</button>
             <button class="tab-btn" data-tab="management">Video Management</button>
@@ -528,7 +1501,7 @@
             <button class="tab-btn" data-tab="add-model">Add New Model</button>
         </div>
 
-        <!-- Upload New Video Tab -->
+        <!-- Upload New Video -->
         <div id="upload" class="tab-content active">
             <section class="upload-section">
                 <h2 class="section-title">
@@ -536,9 +1509,7 @@
                     Upload New Video
                 </h2>
 
-                <!-- IMPORTANT: Add AntiForgeryToken -->
                 <form id="videoUploadForm" method="post" enctype="multipart/form-data">
-                    <!-- AntiForgery Token for ASP.NET Core -->
                     <input type="hidden" name="__RequestVerificationToken" id="antiForgeryToken">
 
                     <div class="upload-form">
@@ -547,23 +1518,28 @@
                                 <label for="ModelId">Select Model</label>
                                 <select id="ModelId" name="ModelId" class="form-control" required>
                                     <option value="" disabled selected>-- Select Model --</option>
-                                    <!-- Models will be loaded from backend -->
                                 </select>
                             </div>
 
                             <div class="form-group required">
                                 <label for="Title">Video Title</label>
-                                <input type="text" id="Title" name="Title" class="form-control" placeholder="Enter video title" required>
+                                <input type="text" id="Title" name="Title"
+                                       class="form-control"
+                                       placeholder="Enter video title" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="Description">Description</label>
-                                <textarea id="Description" name="Description" class="form-control" placeholder="Enter video description"></textarea>
+                                <textarea id="Description" name="Description"
+                                          class="form-control"
+                                          placeholder="Enter video description"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="Tags">Tags (comma separated)</label>
-                                <input type="text" id="Tags" name="Tags" class="form-control" placeholder="e.g., dance, music, performance">
+                                <input type="text" id="Tags" name="Tags"
+                                       class="form-control"
+                                       placeholder="e.g., dance, music, performance">
                             </div>
                         </div>
 
@@ -573,9 +1549,10 @@
                                 <div class="file-upload-area" id="videoUploadArea">
                                     <i class="fas fa-video"></i>
                                     <p><strong>Click to upload video</strong></p>
-                                    <p>Max 2GB • MP4, AVI, MOV, MKV, WebM</p>
+                                    <p class="text-muted">Max 2GB • MP4, AVI, MOV, MKV, WebM</p>
                                     <input type="file" id="VideoFile" name="VideoFile"
-                                           accept=".mp4,.avi,.mov,.mkv,.webm" style="display: none;" required>
+                                           accept=".mp4,.avi,.mov,.mkv,.webm"
+                                           style="display:none;" required>
                                 </div>
                                 <div id="videoFileName" class="file-name"></div>
                             </div>
@@ -585,15 +1562,16 @@
                                 <div class="file-upload-area" id="thumbnailUploadArea">
                                     <i class="fas fa-image"></i>
                                     <p><strong>Click to upload thumbnail</strong></p>
-                                    <p>Recommended: 1280x720 pixels</p>
+                                    <p class="text-muted">Recommended: 1280x720 pixels</p>
                                     <input type="file" id="ThumbnailFile" name="ThumbnailFile"
-                                           accept=".jpg,.jpeg,.png,.gif" style="display: none;">
+                                           accept=".jpg,.jpeg,.png,.gif"
+                                           style="display:none;">
                                 </div>
                                 <div id="thumbnailName" class="file-name"></div>
                             </div>
 
                             <div class="form-group">
-                                <label style="display: flex; align-items: center; gap: 8px;">
+                                <label style="display:flex;align-items:center;gap:8px;">
                                     <input type="checkbox" id="IsFeatured" name="IsFeatured">
                                     Mark as Featured
                                 </label>
@@ -609,7 +1587,7 @@
             </section>
         </div>
 
-        <!-- Video Management Tab -->
+        <!-- Video Management -->
         <div id="management" class="tab-content">
             <section class="management-section">
                 <div class="table-header">
@@ -617,52 +1595,50 @@
                         <i class="fas fa-film"></i>
                         Video Management
                     </h2>
+
                     <div class="table-actions">
-                        <input type="text" class="search-box" placeholder="Search videos..." id="searchInput">
-                        <select class="form-control" style="width: 150px;" id="modelFilter">
+                        <input type="text" class="search-box" id="searchInput" placeholder="Search videos...">
+                        <select class="form-control" id="modelFilter" style="width:150px;">
                             <option value="">All Models</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="table-container">
-                    <table class="video-table">
-                        <thead>
-                            <meta name="__RequestVerificationToken" content="">
-                            <tr>
-                                <th>Thumbnail</th>
-                                <th>Video Info</th>
-                                <th>Model</th>
-                                <th>Views</th>
-                                <th>Uploaded</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="videoTableBody">
-                            <!-- Videos will be dynamically loaded from backend -->
-                        </tbody>
-                    </table>
+                <table class="video-table">
+                    <thead>
+                        <tr>
+                            <th>Thumbnail</th>
+                            <th>Video Info</th>
+                            <th>Model</th>
+                            <th>Views</th>
+                            <th>Uploaded</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="videoTableBody">
+                    </tbody>
+                </table>
 
-                    <div class="empty-state" id="emptyState">
-                        <i class="fas fa-video-slash"></i>
-                        <h3>No videos found</h3>
-                        <p>Upload your first video to get started</p>
-                    </div>
+                <div class="empty-state" id="emptyState">
+                    <i class="fas fa-video-slash"></i>
+                    <h3>No videos found</h3>
+                    <p class="text-muted">Upload your first video to get started</p>
                 </div>
             </section>
         </div>
 
-        <!-- Model Management Tab -->
+        <!-- Model Management -->
         <div id="model-management" class="tab-content">
             <section class="management-section">
                 <div class="table-header">
                     <h2 class="section-title">
-                        <i class="fas fa-user-friends"></i>
+                        <i class="fas fa-users"></i>
                         Model Management
                     </h2>
+
                     <div class="table-actions">
-                        <input type="text" class="search-box" placeholder="Search models..." id="modelSearchInput">
-                        <select class="form-control" style="width: 150px;" id="statusFilter">
+                        <input type="text" class="search-box" id="modelSearchInput" placeholder="Search models...">
+                        <select class="form-control" id="statusFilter" style="width:150px;">
                             <option value="">All Status</option>
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
@@ -670,33 +1646,30 @@
                     </div>
                 </div>
 
-                <div class="table-container">
-                    <table class="video-table">
-                        <thead>
-                            <tr>
-                                <th>Profile</th>
-                                <th>Model Info</th>
-                                <th>Videos</th>
-                                <th>Status</th>
-                                <th>Created</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="modelTableBody">
-                            <!-- Models will be dynamically loaded from backend -->
-                        </tbody>
-                    </table>
+                <table class="model-table">
+                    <thead>
+                        <tr>
+                            <th>Profile</th>
+                            <th>Model Info</th>
+                            <th>Videos</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modelTableBody">
+                    </tbody>
+                </table>
 
-                    <div class="empty-state" id="modelEmptyState">
-                        <i class="fas fa-user-slash"></i>
-                        <h3>No models found</h3>
-                        <p>Add your first model to get started</p>
-                    </div>
+                <div class="empty-state" id="modelEmptyState">
+                    <i class="fas fa-user-slash"></i>
+                    <h3>No models found</h3>
+                    <p class="text-muted">Add your first model to get started</p>
                 </div>
             </section>
         </div>
 
-        <!-- Add New Model Tab -->
+        <!-- Add New Model -->
         <div id="add-model" class="tab-content">
             <section class="upload-section">
                 <h2 class="section-title">
@@ -704,51 +1677,45 @@
                     Add New Model
                 </h2>
 
-                <form id="addModelForm" method="post" enctype="multipart/form-data">
+                <form id="addModelForm">
+                    <input type="hidden" name="__RequestVerificationToken" id="modelAntiForgeryToken">
                     <div class="upload-form">
                         <div>
                             <div class="form-group required">
-                                <label for="modelName">Model Name *</label>
-                                <input type="text" id="modelName" name="Name" class="form-control"
+                                <label for="modelName">Model Name</label>
+                                <input type="text" id="modelName" class="form-control"
                                        placeholder="Enter model name" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="modelBio">Bio / Description</label>
-                                <textarea id="modelBio" name="Bio" class="form-control"
-                                          placeholder="Enter model bio/description" rows="4"></textarea>
+                                <textarea id="modelBio" class="form-control"
+                                          placeholder="Enter model bio"></textarea>
                             </div>
 
                             <div class="form-group">
-                                <label style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="checkbox" id="modelIsActive" name="IsActive" checked>
+                                <label style="display:flex;align-items:center;gap:8px;">
+                                    <input type="checkbox" id="modelIsActive" checked>
                                     Active Model
                                 </label>
-                                <small class="text-muted">Inactive models won't appear on the website</small>
+                                <small class="text-muted">
+                                    Inactive models won’t appear publicly
+                                </small>
                             </div>
                         </div>
 
                         <div>
                             <div class="form-group">
-                                <label for="profilePic">Profile Picture</label>
+                                <label>Profile Picture</label>
                                 <div class="file-upload-area" id="profilePicUploadArea">
                                     <i class="fas fa-user-circle"></i>
-                                    <p><strong>Click to upload profile picture</strong></p>
-                                    <p>Recommended: 500x500 pixels, JPG/PNG</p>
-                                    <input type="file" id="profilePic" name="ProfilePicFile"
-                                           accept=".jpg,.jpeg,.png" style="display: none;">
+                                    <p><strong>Upload profile picture</strong></p>
+                                    <p class="text-muted">500×500 • JPG / PNG</p>
+                                    <input type="file" id="profilePic" name="profilePic"
+                                           accept=".jpg,.jpeg,.png"
+                                           style="display:none;">
                                 </div>
                                 <div id="profilePicName" class="file-name"></div>
-                            </div>
-
-                            <div class="form-group">
-                                <p><strong>Tips:</strong></p>
-                                <ul style="font-size: 14px; color: #666; margin-top: 10px;">
-                                    <li>Model name should be unique</li>
-                                    <li>Add a descriptive bio to help users</li>
-                                    <li>Profile picture should be clear and professional</li>
-                                    <li>You can deactivate models without deleting them</li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -761,64 +1728,64 @@
             </section>
         </div>
 
-        <!-- Edit Model Modal -->
-        <div id="editModelModal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3><i class="fas fa-edit"></i> Edit Model</h3>
-                    <button class="modal-close" onclick="closeEditModal()">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form id="editModelForm" method="post" enctype="multipart/form-data">
-                        <input type="hidden" id="editModelId" name="ModelId">
+    </div>
 
-                        <div class="form-group required">
-                            <label for="editModelName">Model Name *</label>
-                            <input type="text" id="editModelName" name="Name" class="form-control"
-                                   placeholder="Enter model name" required>
-                        </div>
+    <!-- Edit Model Modal -->
+    <div id="editModelModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Model</h3>
+                <button class="modal-close" onclick="closeEditModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="editModelForm">
+                    <input type="hidden" id="editModelId">
+                    
+                    <div class="form-group required">
+                        <label for="editModelName">Model Name</label>
+                        <input type="text" id="editModelName" class="form-control" required>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="editModelBio">Bio / Description</label>
-                            <textarea id="editModelBio" name="Bio" class="form-control"
-                                      placeholder="Enter model bio/description" rows="4"></textarea>
-                        </div>
+                    <div class="form-group">
+                        <label for="editModelBio">Bio / Description</label>
+                        <textarea id="editModelBio" class="form-control"></textarea>
+                    </div>
 
-                        <div class="form-group">
-                            <label>Current Profile Picture</label>
-                            <div id="currentProfilePicContainer" style="margin-bottom: 15px;">
-                                <img id="currentProfilePic" src="" alt="Current Profile"
-                                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0;">
+                    <div class="form-group">
+                        <label style="display:flex;align-items:center;gap:8px;">
+                            <input type="checkbox" id="editModelIsActive">
+                            Active Model
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Profile Picture</label>
+                        <div id="currentProfilePicContainer">
+                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                                <div>
+                                    <p style="margin: 0 0 5px 0; font-size: 13px; color: #64748b;">Current Picture:</p>
+                                    <img id="currentProfilePic" src="" alt="Current Profile"
+                                         style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0;">
+                                </div>
                             </div>
-
-                            <label for="editProfilePic">Change Profile Picture (Optional)</label>
-                            <div class="file-upload-area" id="editProfilePicUploadArea" style="padding: 15px;">
-                                <i class="fas fa-camera"></i>
-                                <p><strong>Click to upload new picture</strong></p>
-                                <p>Leave empty to keep current picture</p>
-                                <input type="file" id="editProfilePic" name="ProfilePicFile"
-                                       accept=".jpg,.jpeg,.png" style="display: none;">
-                            </div>
-                            <div id="editProfilePicName" class="file-name"></div>
                         </div>
-
-                        <div class="form-group">
-                            <label style="display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" id="editModelIsActive" name="IsActive" checked>
-                                Active Model
-                            </label>
+                        <div class="file-upload-area" id="editProfilePicUploadArea">
+                            <i class="fas fa-user-circle"></i>
+                            <p><strong>Upload new profile picture</strong></p>
+                            <p class="text-muted">500×500 • JPG / PNG</p>
+                            <input type="file" id="editProfilePic" name="editProfilePic"
+                                   accept=".jpg,.jpeg,.png"
+                                   style="display:none;">
                         </div>
-
-                        <div class="form-actions" style="margin-top: 20px;">
-                            <button type="button" class="btn btn-cancel" onclick="closeEditModal()">Cancel</button>
-                            <button type="submit" class="btn btn-primary" id="updateModelBtn">Update Model</button>
-                        </div>
-                    </form>
-                </div>
+                        <div id="editProfilePicName" class="file-name"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" onclick="closeEditModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" id="updateModelBtn" onclick="submitEditModel()">Update Model</button>
             </div>
         </div>
-
-
     </div>
 
     <script>
@@ -961,7 +1928,7 @@
             }
 
             // Render models in table
-                    // Render models in table (UPDATED with edit button)
+                    // Render models in table
         function renderModels(models) {
             console.log('Rendering models:', models);
             const tbody = document.getElementById('modelTableBody');
@@ -1023,6 +1990,75 @@
                     </tr>
                 `;
             }).join('');
+
+            // Also render card view for mobile
+            const cardContainer = document.getElementById('modelTableBody').parentElement.parentElement;
+            const cardsHtml = models.map(model => {
+                const modelId = model.modelId || model.ModelId || 0;
+                const name = model.name || model.Name || 'No Name';
+                const bio = model.bio || model.Bio || 'No bio provided';
+                const profilePic = model.profilePic || '/images/default-model.jpg';
+                const videoCount = model.videoCount || model.VideoCount || 0;
+                const isActive = model.isActive !== undefined ? model.isActive : true;
+                const createdAt = model.createdAt || 'Unknown';
+
+                return `
+                    <div class="model-card" data-id="${modelId}">
+                        <div class="card-row">
+                            <div class="card-image">
+                                <img src="${profilePic}" alt="${name}" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 1px solid var(--black-border);">
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title">${name}</div>
+                                <div class="card-subtitle">${bio.length > 80 ? bio.substring(0, 80) + '...' : bio}</div>
+                            </div>
+                        </div>
+                        <div class="card-row">
+                            <div class="card-content">
+                                <div class="card-label">Videos</div>
+                                <div class="card-value">${videoCount} videos</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-label">Status</div>
+                                <div class="card-value">
+                                    <span class="status-badge ${isActive ? 'status-active' : 'status-inactive'}">
+                                        ${isActive ? 'Active' : 'Inactive'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-row">
+                            <div class="card-content">
+                                <div class="card-label">Created</div>
+                                <div class="card-value">${createdAt}</div>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-edit" onclick="openEditModal(${modelId})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-toggle ${isActive ? '' : 'inactive'}"
+                                    onclick="toggleModelStatus(${modelId}, ${isActive})">
+                                <i class="fas ${isActive ? 'fa-toggle-on' : 'fa-toggle-off'}"></i>
+                                ${isActive ? 'Deactivate' : 'Activate'}
+                            </button>
+                            <button class="btn btn-delete" onclick="deleteModel(${modelId})"
+                                    ${videoCount > 0 ? 'disabled title="Cannot delete model with videos"' : ''}>
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Insert card view before table
+            let cardsContainer = document.getElementById('modelCardsContainer');
+            if (!cardsContainer) {
+                cardsContainer = document.createElement('div');
+                cardsContainer.id = 'modelCardsContainer';
+                tbody.parentElement.parentElement.insertBefore(cardsContainer, tbody.parentElement);
+            }
+            cardsContainer.innerHTML = cardsHtml;
 
             console.log('Models rendered successfully');
         }
@@ -1099,9 +2135,7 @@
         });
 
         // Update model form submission
-        document.getElementById('editModelForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
+        async function submitEditModel() {
             const updateModelBtn = document.getElementById('updateModelBtn');
             const originalText = updateModelBtn.textContent;
 
@@ -1169,7 +2203,7 @@
                 updateModelBtn.disabled = false;
                 updateModelBtn.textContent = originalText;
             }
-        });
+        }
 
         // Close modal when clicking outside
         document.getElementById('editModelModal').addEventListener('click', function(e) {
@@ -1361,10 +2395,16 @@
             document.getElementById('modelSearchInput').addEventListener('input', function(e) {
                 const searchTerm = e.target.value.toLowerCase();
                 const rows = document.querySelectorAll('#modelTableBody tr');
+                const cards = document.querySelectorAll('#modelCardsContainer .model-card');
 
                 rows.forEach(row => {
                     const text = row.textContent.toLowerCase();
                     row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+
+                cards.forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    card.style.display = text.includes(searchTerm) ? '' : 'none';
                 });
             });
 
@@ -1372,6 +2412,7 @@
             document.getElementById('statusFilter').addEventListener('change', function(e) {
                 const status = e.target.value.toLowerCase();
                 const rows = document.querySelectorAll('#modelTableBody tr');
+                const cards = document.querySelectorAll('#modelCardsContainer .model-card');
 
                 rows.forEach(row => {
                     if (!status) {
@@ -1382,6 +2423,16 @@
                     const statusCell = row.cells[3];
                     const statusText = statusCell.textContent.toLowerCase();
                     row.style.display = statusText.includes(status) ? '' : 'none';
+                });
+
+                cards.forEach(card => {
+                    if (!status) {
+                        card.style.display = '';
+                        return;
+                    }
+
+                    const text = card.textContent.toLowerCase();
+                    card.style.display = text.includes(status) ? '' : 'none';
                 });
             });
 
@@ -1491,6 +2542,57 @@
                     </tr>
                 `;
             }).join('');
+
+            // Also render card view for mobile
+            const cardsHtml = videos.map(video => {
+                const videoId = video.videoId || video.VideoId || 0;
+                const title = video.title || video.Title || 'No Title';
+                const description = video.description || video.Description || '';
+                const thumbnail = video.thumbnail || video.thumbnailPath || '/images/default-thumbnail.jpg';
+                const modelName = video.modelName || (video.model ? video.model.name : 'Unknown');
+                const views = video.views || video.Views || 0;
+                const duration = video.durationFormatted || formatDuration(video.duration) || '00:00';
+                const uploadedAt = video.uploadedAt || 'Unknown';
+
+                return `
+                    <div class="video-card" data-id="${videoId}">
+                        <div class="card-row">
+                            <div class="card-image">
+                                <img src="${thumbnail}" alt="${title}" style="width: 70px; height: 70px; border-radius: 8px; object-fit: cover; border: 1px solid var(--black-border);">
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title">${title}</div>
+                                <div class="card-subtitle">${duration} • ${views} views</div>
+                                ${description ? `<div class="card-subtitle">${description}</div>` : ''}
+                            </div>
+                        </div>
+                        <div class="card-row">
+                            <div class="card-content">
+                                <div class="card-label">Model</div>
+                                <div class="card-value">${modelName}</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-label">Uploaded</div>
+                                <div class="card-value">${uploadedAt}</div>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-delete" onclick="deleteVideo(${videoId})">
+                                <i class="fas fa-trash"></i> Delete Video
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Insert card view before table
+            let cardsContainer = document.getElementById('videoCardsContainer');
+            if (!cardsContainer) {
+                cardsContainer = document.createElement('div');
+                cardsContainer.id = 'videoCardsContainer';
+                tbody.parentElement.parentElement.insertBefore(cardsContainer, tbody.parentElement);
+            }
+            cardsContainer.innerHTML = cardsHtml;
 
             console.log('Videos rendered successfully');
         }
@@ -1633,10 +2735,16 @@
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
             const rows = document.querySelectorAll('#videoTableBody tr');
+            const cards = document.querySelectorAll('#videoCardsContainer .video-card');
 
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
                 row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(searchTerm) ? '' : 'none';
             });
         });
 
@@ -1644,10 +2752,16 @@
         document.getElementById('modelFilter').addEventListener('change', function(e) {
             const model = e.target.value.toLowerCase();
             const rows = document.querySelectorAll('#videoTableBody tr');
+            const cards = document.querySelectorAll('#videoCardsContainer .video-card');
 
             rows.forEach(row => {
                 const rowModel = row.cells[2].textContent.toLowerCase();
                 row.style.display = (!model || rowModel.includes(model)) ? '' : 'none';
+            });
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = (!model || text.includes(model)) ? '' : 'none';
             });
         });
 
