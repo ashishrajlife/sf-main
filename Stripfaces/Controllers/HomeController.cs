@@ -32,10 +32,33 @@
                 .Take(6)
                 .ToListAsync();
 
+            // GET TOP 10 RECENT VIDEOS (for all users - logged in or not)
+            var recentVideos = await _context.Videos
+                .Where(v => v.IsApproved) // Only show approved videos
+                .Include(v => v.Model)
+                .OrderByDescending(v => v.UploadedAt) // Sort by newest first
+                .Take(10) // Take only top 10
+                .Select(v => new
+                {
+                    v.VideoId,
+                    v.Title,
+                    v.Description,
+                    v.FilePath,
+                    Thumbnail = v.ThumbnailPath ?? "/images/default-thumbnail.jpg",
+                    ModelName = v.Model.Name,
+                    v.Views,
+                    v.UploadedAt,
+                    Duration = v.Duration.HasValue ?
+                        TimeSpan.FromSeconds(v.Duration.Value).ToString(@"mm\:ss") : "00:00",
+                    v.IsFeatured
+                })
+                .ToListAsync();
+
             ViewBag.FeaturedVideos = featuredVideos;
             ViewBag.ModelsWithVideos = modelsWithVideos;
+            ViewBag.RecentVideos = recentVideos; // Add recent videos to ViewBag
 
-            // Check if user is logged in and set in ViewData
+            // Check if user is logged in
             var userId = HttpContext.Session.GetString("UserId");
             if (!string.IsNullOrEmpty(userId))
             {
@@ -50,5 +73,6 @@
 
             return View();
         }
-    }
+        
+      }
     }

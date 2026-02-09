@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Stripfaces")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+82bf6cffd63df1ebed76c5263e0615bd7489d1ef")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c01e0652e21a51f19edf221330baf89cf9b1517e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Stripfaces")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Stripfaces")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
