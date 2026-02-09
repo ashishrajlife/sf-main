@@ -2,7 +2,7 @@
 @model RegisterViewModel
 
 @{
-    ViewData["Title"] = "Register - StreamFlix";
+    ViewData["Title"] = "Register - StripFaces";
     Layout = null;
 }
 
@@ -22,23 +22,28 @@
         }
 
         :root {
-            --primary-blue: #2563eb;
-            --primary-blue-hover: #1d4ed8;
-            --gray-light: #f8fafc;
-            --gray-medium: #e2e8f0;
-            --gray-dark: #64748b;
-            --text-dark: #1e293b;
+            --black-bg: #0a0a0a;
+            --black-card: #1a1a1a;
+            --black-border: #333333;
+            --yellow-primary: #FFD700;
+            --yellow-hover: #FFED4E;
+            --yellow-dark: #E6C200;
+            --text-light: #f0f0f0;
+            --text-muted: #a0a0a0;
             --white: #ffffff;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow: 0 4px 20px rgba(255, 215, 0, 0.15);
+            --error-red: #ff6b6b;
+            --success-green: #4ade80;
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--black-bg);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1rem;
+            background-image: radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.05) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
         }
 
         .register-container {
@@ -47,28 +52,40 @@
         }
 
         .register-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: var(--black-card);
             border-radius: 16px;
             padding: 2.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--black-border);
+            transition: all 0.3s ease;
         }
+
+            .register-card:hover {
+                box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
+                border-color: var(--yellow-primary);
+            }
 
         .logo {
             text-align: center;
             margin-bottom: 2rem;
-            color: var(--primary-blue);
+            color: var(--yellow-primary);
         }
 
             .logo i {
-                font-size: 3rem;
+                font-size: 3.5rem;
                 margin-bottom: 1rem;
+                text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
             }
 
             .logo h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
                 font-weight: 700;
+                margin-bottom: 0.5rem;
+            }
+
+            .logo p {
+                color: var(--text-muted);
+                font-size: 0.95rem;
             }
 
         .form-group {
@@ -78,23 +95,32 @@
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-dark);
+            font-weight: 600;
+            color: var(--yellow-primary);
+            font-size: 0.95rem;
         }
 
         .form-control {
             width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--gray-medium);
+            padding: 0.85rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--black-border);
             border-radius: 8px;
             font-size: 1rem;
-            transition: all 0.3s;
+            color: var(--text-light);
+            transition: all 0.3s ease;
         }
 
             .form-control:focus {
                 outline: none;
-                border-color: var(--primary-blue);
-                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+                border-color: var(--yellow-primary);
+                box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15);
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            .form-control::placeholder {
+                color: var(--text-muted);
+                opacity: 0.7;
             }
 
         .input-icon {
@@ -106,7 +132,8 @@
                 left: 1rem;
                 top: 50%;
                 transform: translateY(-50%);
-                color: var(--gray-dark);
+                color: var(--yellow-primary);
+                font-size: 1.1rem;
             }
 
             .input-icon input {
@@ -115,49 +142,119 @@
 
         .btn-primary {
             width: 100%;
-            background: var(--primary-blue);
-            color: white;
+            background: linear-gradient(135deg, var(--yellow-primary), var(--yellow-dark));
+            color: #000;
             border: none;
-            padding: 0.875rem;
+            padding: 1rem;
             border-radius: 8px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
             margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            letter-spacing: 0.5px;
         }
 
             .btn-primary:hover {
-                background: var(--primary-blue-hover);
+                background: linear-gradient(135deg, var(--yellow-hover), var(--yellow-primary));
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+            }
+
+            .btn-primary:active {
+                transform: translateY(0);
             }
 
         .text-danger {
-            color: #dc2626;
+            color: var(--error-red);
             font-size: 0.875rem;
-            margin-top: 0.25rem;
+            margin-top: 0.5rem;
         }
 
         .form-footer {
             text-align: center;
-            margin-top: 1.5rem;
-            color: var(--gray-dark);
+            margin-top: 2rem;
+            color: var(--text-muted);
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--black-border);
         }
 
             .form-footer a {
-                color: var(--primary-blue);
+                color: var(--yellow-primary);
                 text-decoration: none;
-                font-weight: 500;
+                font-weight: 600;
+                transition: color 0.3s ease;
             }
 
                 .form-footer a:hover {
+                    color: var(--yellow-hover);
                     text-decoration: underline;
                 }
 
         .password-requirements {
             font-size: 0.8rem;
-            color: var(--gray-dark);
-            margin-top: 0.25rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            border-left: 3px solid var(--yellow-primary);
         }
+
+        /* Responsive */
+        @@media (max-width: 480px) {
+            .register-card {
+                padding: 1.5rem;
+            }
+
+            .logo i {
+                font-size: 2.5rem;
+            }
+
+            .logo h1 {
+                font-size: 1.6rem;
+            }
+
+            .form-control {
+                padding: 0.75rem 1rem;
+            }
+
+            .input-icon input {
+                padding-left: 2.5rem;
+            }
+
+            .input-icon i {
+                left: 0.75rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Password match indicator */
+        .password-match {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+            .password-match.show {
+                opacity: 1;
+            }
+
+            .password-match.match {
+                color: var(--success-green);
+            }
+
+            .password-match.mismatch {
+                color: var(--error-red);
+            }
     </style>
 </head>
 <body>
@@ -165,29 +262,28 @@
         <div class="register-card">
             <div class="logo">
                 <i class="fas fa-play-circle"></i>
-                <h1>Join StreamFlix</h1>
-                <p style="color: var(--gray-dark); font-size: 0.9rem;">Create your account to get started</p>
+                <h1>Join StripFaces</h1>
+                <p>Create your account to get started</p>
             </div>
 
-            <form method="post" asp-action="Register">
+            <form method="post" asp-action="Register" id="registerForm">
                 @Html.AntiForgeryToken()
 
                 <div class="form-group">
                     <label class="form-label">Username</label>
                     <div class="input-icon">
                         <i class="fas fa-user"></i>
-                        <input type="text" class="form-control" asp-for="Username"
+                        <input type="text" class="form-control" asp-for="Username" id="username"
                                placeholder="Enter username" required>
                     </div>
                     <span asp-validation-for="Username" class="text-danger"></span>
-                    <div class="password-requirements">3-50 characters, letters, numbers and underscore only</div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Email</label>
                     <div class="input-icon">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" class="form-control" asp-for="Email"
+                        <input type="email" class="form-control" asp-for="Email" id="email"
                                placeholder="Enter email address" required>
                     </div>
                     <span asp-validation-for="Email" class="text-danger"></span>
@@ -196,46 +292,111 @@
                 <div class="form-group">
                     <label class="form-label">Password</label>
                     <div class="input-icon">
+                        Upload New VideoUpload New VideoUpload New VideoUpload New Video
                         <i class="fas fa-lock"></i>
-                        <input type="password" class="form-control" asp-for="Password"
+                        <input type="password" class="form-control" asp-for="Password" id="password"
                                placeholder="Enter password" required>
                     </div>
                     <span asp-validation-for="Password" class="text-danger"></span>
-                    <div class="password-requirements">Minimum 6 characters</div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Confirm Password</label>
                     <div class="input-icon">
                         <i class="fas fa-lock"></i>
-                        <input type="password" class="form-control" asp-for="ConfirmPassword"
-                               placeholder="Confirm password" required>
+                        <input type="password" class="form-control" asp-for="ConfirmPassword" id="confirmPassword" placeholder="Confirm password" required>
                     </div>
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    <div class="password-match" id="passwordMatch">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Passwords match</span>
+                    </div>
                 </div>
 
-                <button type="submit" class="btn-primary">
+                <button type="submit" class="btn-primary" id="registerBtn">
                     <i class="fas fa-user-plus"></i> Create Account
                 </button>
             </form>
 
             <div class="form-footer">
-                <p>Already have an account? <a href="@Url.Action("Login", "Auth")">Login here</a></p>
+                <p>
+                    Already have an account?
+                    <a href="@Url.Action("Login", "Auth")">
+                        <i class="fas fa-sign-in-alt"></i> Login here
+                    </a>
+                </p>
             </div>
         </div>
     </div>
 
     <script>
-        // Password match validation
-        document.querySelector('[name="ConfirmPassword"]').addEventListener('input', function() {
-            const password = document.querySelector('[name="Password"]').value;
-            const confirmPassword = this.value;
+        // Simple password match validation
+        document.addEventListener('DOMContentLoaded', function() {
+            var passwordInput = document.getElementById('password');
+            var confirmPasswordInput = document.getElementById('confirmPassword');
+            var passwordMatchDiv = document.getElementById('passwordMatch');
 
-            if (password !== confirmPassword) {
-                this.style.borderColor = '#dc2626';
-            } else {
-                this.style.borderColor = '#16a34a';
+            function checkPasswordMatch() {
+                var password = passwordInput.value;
+                var confirmPassword = confirmPasswordInput.value;
+
+                if (confirmPassword === '') {
+                    passwordMatchDiv.classList.remove('show', 'match', 'mismatch');
+                    return;
+                }
+
+                passwordMatchDiv.classList.add('show');
+
+                if (password === confirmPassword) {
+                    passwordMatchDiv.classList.add('match');
+                    passwordMatchDiv.classList.remove('mismatch');
+                    passwordMatchDiv.innerHTML = '<i class="fas fa-check-circle"></i><span>Passwords match</span>';
+                    confirmPasswordInput.style.borderColor = '#4ade80';
+                } else {
+                    passwordMatchDiv.classList.add('mismatch');
+                    passwordMatchDiv.classList.remove('match');
+                    passwordMatchDiv.innerHTML = '<i class="fas fa-times-circle"></i><span>Passwords do not match</span>';
+                    confirmPasswordInput.style.borderColor = '#ff6b6b';
+                }
             }
+
+            // Add event listeners
+            passwordInput.addEventListener('input', checkPasswordMatch);
+            confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+
+            // Form validation
+            var registerForm = document.getElementById('registerForm');
+            var registerBtn = document.getElementById('registerBtn');
+
+            registerForm.addEventListener('submit', function(e) {
+                var password = passwordInput.value;
+                var confirmPassword = confirmPasswordInput.value;
+                var username = document.getElementById('username').value;
+                var email = document.getElementById('email').value;
+
+                // Basic validation
+                if (!username || !email || !password || !confirmPassword) {
+                    e.preventDefault();
+                    alert('Please fill in all fields');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    e.preventDefault();
+                    alert('Passwords do not match');
+                    return;
+                }
+
+                if (password.length < 6) {
+                    e.preventDefault();
+                    alert('Password must be at least 6 characters');
+                    return;
+                }
+
+                // Show loading state
+                registerBtn.disabled = true;
+                registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            });
         });
     </script>
 </body>

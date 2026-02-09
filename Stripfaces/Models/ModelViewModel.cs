@@ -5,6 +5,8 @@ namespace stripfaces.Models
 {
     public class ModelViewModel
     {
+        public int? ModelId { get; set; }
+
         [Required(ErrorMessage = "Model name is required")]
         [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters")]
         [Display(Name = "Model Name")]
@@ -18,5 +20,6 @@ namespace stripfaces.Models
 
         [Display(Name = "Active")]
         public bool IsActive { get; set; } = true;
+        public string ExistingProfilePic { get; set; } = string.Empty;
     }
 }

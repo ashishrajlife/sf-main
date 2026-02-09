@@ -458,6 +458,97 @@ namespace stripfaces.Controllers
         }
 
 
+        // GET: /Admin/GetModel/{id} (for editing)
+        [HttpGet]
+        [Route("GetModel/{id}")]
+        public async Task<IActionResult> GetModel(int id)
+        {
+            if (!IsAuthenticated() || !IsAdmin())
+                return Json(new { success = false, message = "Unauthorized" });
+
+            try
+            {
+                var model = await _context.Models.FindAsync(id);
+                if (model == null)
+                    return Json(new { success = false, message = "Model not found" });
+
+                var modelData = new
+                {
+                    modelId = model.ModelId,
+                    name = model.Name,
+                    bio = model.Bio,
+                    profilePic = model.ProfilePic ?? "/images/default-model.jpg",
+                    isActive = model.IsActive,
+                    createdAt = model.CreatedAt.ToString("MMM dd, yyyy")
+                };
+
+                return Json(new { success = true, data = modelData });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        // POST: /Admin/UpdateModel
+        [HttpPost]
+        [Route("UpdateModel")]
+        public async Task<IActionResult> UpdateModel([FromForm] ModelViewModel model)
+        {
+            if (!IsAuthenticated() || !IsAdmin())
+                return Json(new { success = false, message = "Unauthorized" });
+
+            try
+            {
+                if (!model.ModelId.HasValue)
+                    return Json(new { success = false, message = "Model ID is required" });
+
+                var existingModel = await _context.Models.FindAsync(model.ModelId.Value);
+                if (existingModel == null)
+                    return Json(new { success = false, message = "Model not found" });
+
+                // Check if model name already exists (excluding current model)
+                if (model.Name != existingModel.Name &&
+                    await _context.Models.AnyAsync(m => m.Name == model.Name))
+                {
+                    return Json(new { success = false, message = "Model name already exists" });
+                }
+
+                // Update basic info
+                existingModel.Name = model.Name;
+                existingModel.Bio = model.Bio;
+                existingModel.IsActive = model.IsActive;
+
+                // Handle profile picture update
+                if (model.ProfilePicFile != null && model.ProfilePicFile.Length > 0)
+                {
+                    // Delete old profile picture if exists and not default
+                    if (!string.IsNullOrEmpty(existingModel.ProfilePic) &&
+                        !existingModel.ProfilePic.Contains("/images/default-model.jpg"))
+                    {
+                        _fileUploadService.DeleteProfilePicture(existingModel.ProfilePic);
+                    }
+
+                    // Save new profile picture
+                    var profilePicPath = await _fileUploadService.SaveProfilePicture(model.ProfilePicFile);
+                    existingModel.ProfilePic = profilePicPath;
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Model updated successfully",
+                    modelId = existingModel.ModelId
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
 
     }
 }
