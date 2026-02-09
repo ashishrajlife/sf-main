@@ -5,7 +5,12 @@ using stripfaces.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);

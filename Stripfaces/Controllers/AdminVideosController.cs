@@ -136,5 +136,62 @@ namespace Stripfaces.Controllers
 
             return RedirectToAction("Manage");
         }
+
+        // Add these to your AdminVideosController.cs
+
+        [HttpGet("GetModels")]
+        public async Task<IActionResult> GetModels()
+        {
+            try
+            {
+                var models = await _context.Models
+                    .Where(m => m.IsActive)
+                    .Select(m => new
+                    {
+                        ModelId = m.ModelId,
+                        Name = m.Name
+                    })
+                    .ToListAsync();
+
+                return Json(models);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        [HttpGet("GetVideos")]
+        public async Task<IActionResult> GetVideos()
+        {
+            try
+            {
+                var videos = await _context.Videos
+                    .Include(v => v.Model)
+                    .OrderByDescending(v => v.UploadedAt)
+                    .Select(v => new
+                    {
+                        VideoId = v.VideoId,
+                        Title = v.Title,
+                        Description = v.Description,
+                        FilePath = v.FilePath,
+                        ThumbnailPath = v.ThumbnailPath,
+                        Duration = v.Duration,
+                        Views = v.Views,
+                        Model = v.Model != null ? new { ModelId = v.Model.ModelId, Name = v.Model.Name } : null,
+                        UploadedAt = v.UploadedAt,
+                        Tags = v.Tags,
+                        IsFeatured = v.IsFeatured
+                    })
+                    .ToListAsync();
+
+                return Json(videos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
     }
 }

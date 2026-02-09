@@ -58,7 +58,8 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
-wwwroot\uploads\videos\mia\dance1.mp4.mp4
+wwwroot\uploads\thumbnails\mia\22b1d647-fedb-44f5-a5d2-8fba87230de5.png
+wwwroot\uploads\videos\mia\fabc02c5-c91f-44fd-b13a-754bacc7ff47.mp4
 E:\sfc.com-main-git\sf-main\Stripfaces\wwwroot\css\site.css
 E:\sfc.com-main-git\sf-main\Stripfaces\wwwroot\favicon.ico
 E:\sfc.com-main-git\sf-main\Stripfaces\wwwroot\js\site.js
