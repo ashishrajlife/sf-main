@@ -307,6 +307,7 @@
         var userId = HttpContextAccessor.HttpContext?.Session.GetString("UserId");
         var username = HttpContextAccessor.HttpContext?.Session.GetString("Username");
         var role = HttpContextAccessor.HttpContext?.Session.GetString("Role");
+        var isLoggedIn = ViewData["IsLoggedIn"] as bool? ?? false;
     }
 
     <header>
@@ -317,25 +318,19 @@
             </a>
 
             <div class="nav-links">
-                <a href="/">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </a>
 
-                @if (!string.IsNullOrEmpty(userId))
+                @if (isLoggedIn)
                 {
-                    <a href="@Url.Action("Index", role)">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-
                     @if (role == "admin")
                     {
-                        <a href="@Url.Action("Users", "Admin")">
-                            <i class="fas fa-users"></i>
-                            <span>Manage Users</span>
+                        <a href="/Admin">
+                            <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
                         </a>
                     }
+                }
+                else
+                {
+                    <a href="/"> <i class="fas fa-home"></i> <span>Home</span> </a>
                 }
 
                 <div class="auth-buttons">

@@ -1,19 +1,19 @@
-// Controllers/HomeController.cs
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using stripfaces.Data;
-using stripfaces.Models;
+    // Controllers/HomeController.cs
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using stripfaces.Data;
+    using stripfaces.Models;
 
-namespace stripfaces.Controllers
-{
-    public class HomeController : Controller
+    namespace stripfaces.Controllers
     {
-        private readonly ApplicationDbContext _context;
-
-        public HomeController(ApplicationDbContext context)
+        public class HomeController : Controller
         {
-            _context = context;
-        }
+            private readonly ApplicationDbContext _context;
+
+            public HomeController(ApplicationDbContext context)
+            {
+                _context = context;
+            }
 
         public async Task<IActionResult> Index()
         {
@@ -35,7 +35,20 @@ namespace stripfaces.Controllers
             ViewBag.FeaturedVideos = featuredVideos;
             ViewBag.ModelsWithVideos = modelsWithVideos;
 
+            // Check if user is logged in and set in ViewData
+            var userId = HttpContext.Session.GetString("UserId");
+            if (!string.IsNullOrEmpty(userId))
+            {
+                ViewData["IsLoggedIn"] = true;
+                ViewData["Username"] = HttpContext.Session.GetString("Username");
+                ViewData["Role"] = HttpContext.Session.GetString("Role");
+            }
+            else
+            {
+                ViewData["IsLoggedIn"] = false;
+            }
+
             return View();
         }
     }
-}
+    }

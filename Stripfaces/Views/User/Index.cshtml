@@ -3,44 +3,6 @@
 }
 
 <div class="user-dashboard">
-    <!-- Welcome Section -->
-    <div class="welcome-section">
-        <h1>Welcome back, @ViewData["Username"]!</h1>
-        <p class="welcome-subtitle">
-            <i class="fas fa-video"></i> Continue your streaming journey
-        </p>
-    </div>
-
-    <!-- Quick Stats -->
-    <div class="quick-stats">
-        <div class="stat-card">
-            <div class="stat-icon">
-                <i class="fas fa-history"></i>
-            </div>
-            <div class="stat-info">
-                <h3>@ViewBag.WatchHistory?.Count</h3>
-                <p>In Progress</p>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon">
-                <i class="fas fa-heart"></i>
-            </div>
-            <div class="stat-info">
-                <h3>0</h3>
-                <p>Favorites</p>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon">
-                <i class="fas fa-clock"></i>
-            </div>
-            <div class="stat-info">
-                <h3>0h</h3>
-                <p>Watch Time</p>
-            </div>
-        </div>
-    </div>
 
     <!-- Continue Watching -->
     @if (ViewBag.WatchHistory != null && ViewBag.WatchHistory.Count > 0)
