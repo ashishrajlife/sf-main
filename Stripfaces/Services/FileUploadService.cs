@@ -143,5 +143,22 @@ namespace stripfaces.Services
             }
             return false;
         }
+
+        public bool DeleteProfilePicture(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                return false;
+
+            var fullPath = Path.Combine(_env.WebRootPath, filePath.TrimStart('/'));
+
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+                return true;
+            }
+            return false;
+        }
+
+
     }
 }

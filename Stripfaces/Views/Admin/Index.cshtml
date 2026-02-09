@@ -404,6 +404,108 @@
     color: #94a3b8 !important;
     font-size: 13px;
 }
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-header h3 i {
+    color: #4a6cf7;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+/* Edit button styles */
+.btn-edit {
+    background: #4a6cf7;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.3s ease;
+}
+
+.btn-edit:hover {
+    background: #3a5ce5;
+}
+
+.btn-edit i {
+    margin-right: 5px;
+}
+
+/* Action buttons container */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Disabled button style */
+.btn-delete:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
      
     </style>
 </head>
@@ -659,6 +761,63 @@
             </section>
         </div>
 
+        <!-- Edit Model Modal -->
+        <div id="editModelModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-edit"></i> Edit Model</h3>
+                    <button class="modal-close" onclick="closeEditModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="editModelForm" method="post" enctype="multipart/form-data">
+                        <input type="hidden" id="editModelId" name="ModelId">
+
+                        <div class="form-group required">
+                            <label for="editModelName">Model Name *</label>
+                            <input type="text" id="editModelName" name="Name" class="form-control"
+                                   placeholder="Enter model name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editModelBio">Bio / Description</label>
+                            <textarea id="editModelBio" name="Bio" class="form-control"
+                                      placeholder="Enter model bio/description" rows="4"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Current Profile Picture</label>
+                            <div id="currentProfilePicContainer" style="margin-bottom: 15px;">
+                                <img id="currentProfilePic" src="" alt="Current Profile"
+                                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0;">
+                            </div>
+
+                            <label for="editProfilePic">Change Profile Picture (Optional)</label>
+                            <div class="file-upload-area" id="editProfilePicUploadArea" style="padding: 15px;">
+                                <i class="fas fa-camera"></i>
+                                <p><strong>Click to upload new picture</strong></p>
+                                <p>Leave empty to keep current picture</p>
+                                <input type="file" id="editProfilePic" name="ProfilePicFile"
+                                       accept=".jpg,.jpeg,.png" style="display: none;">
+                            </div>
+                            <div id="editProfilePicName" class="file-name"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" id="editModelIsActive" name="IsActive" checked>
+                                Active Model
+                            </label>
+                        </div>
+
+                        <div class="form-actions" style="margin-top: 20px;">
+                            <button type="button" class="btn btn-cancel" onclick="closeEditModal()">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="updateModelBtn">Update Model</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 
@@ -802,67 +961,251 @@
             }
 
             // Render models in table
-            function renderModels(models) {
-                console.log('Rendering models:', models);
-                const tbody = document.getElementById('modelTableBody');
-                const emptyState = document.getElementById('modelEmptyState');
+                    // Render models in table (UPDATED with edit button)
+        function renderModels(models) {
+            console.log('Rendering models:', models);
+            const tbody = document.getElementById('modelTableBody');
+            const emptyState = document.getElementById('modelEmptyState');
 
-                if (!models || models.length === 0) {
-                    console.log('No models to display');
-                    emptyState.style.display = 'block';
-                    tbody.innerHTML = '';
-                    return;
+            if (!models || models.length === 0) {
+                console.log('No models to display');
+                emptyState.style.display = 'block';
+                tbody.innerHTML = '';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            tbody.innerHTML = models.map(model => {
+                const modelId = model.modelId || model.ModelId || 0;
+                const name = model.name || model.Name || 'No Name';
+                const bio = model.bio || model.Bio || 'No bio provided';
+                const profilePic = model.profilePic || '/images/default-model.jpg';
+                const videoCount = model.videoCount || model.VideoCount || 0;
+                const isActive = model.isActive !== undefined ? model.isActive : true;
+                const createdAt = model.createdAt || 'Unknown';
+
+                return `
+                    <tr data-id="${modelId}">
+                        <td>
+                            <img src="${profilePic}"
+                                 alt="${name}" class="model-profile-pic">
+                        </td>
+                        <td>
+                            <div class="model-info">
+                                <h4>${name}</h4>
+                                <p>${bio.length > 100 ? bio.substring(0, 100) + '...' : bio}</p>
+                            </div>
+                        </td>
+                        <td>${videoCount} videos</td>
+                        <td>
+                            <span class="status-badge ${isActive ? 'status-active' : 'status-inactive'}">
+                                ${isActive ? 'Active' : 'Inactive'}
+                            </span>
+                        </td>
+                        <td>${createdAt}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-edit" onclick="openEditModal(${modelId})">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn-toggle ${isActive ? '' : 'inactive'}"
+                                        onclick="toggleModelStatus(${modelId}, ${isActive})">
+                                    <i class="fas ${isActive ? 'fa-toggle-on' : 'fa-toggle-off'}"></i>
+                                    ${isActive ? 'Deactivate' : 'Activate'}
+                                </button>
+                                <button class="btn-delete" onclick="deleteModel(${modelId})"
+                                        ${videoCount > 0 ? 'disabled title="Cannot delete model with videos"' : ''}>
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            console.log('Models rendered successfully');
+        }
+
+                // Open edit modal and load model data
+        async function openEditModal(modelId) {
+            try {
+                console.log('Loading model data for editing:', modelId);
+                const response = await fetch(`/Admin/GetModel/${modelId}`);
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Model data result:', result);
+
+                    if (result.success && result.data) {
+                        const model = result.data;
+
+                        // Fill form with model data
+                        document.getElementById('editModelId').value = model.modelId;
+                        document.getElementById('editModelName').value = model.name;
+                        document.getElementById('editModelBio').value = model.bio || '';
+                        document.getElementById('editModelIsActive').checked = model.isActive;
+                        document.getElementById('currentProfilePic').src = model.profilePic;
+
+                        // Clear any previously selected file
+                        document.getElementById('editProfilePic').value = '';
+                        document.getElementById('editProfilePicName').textContent = '';
+
+                        // Show modal
+                        document.getElementById('editModelModal').style.display = 'flex';
+                    } else {
+                        showNotification(result.message || 'Failed to load model data', 'error');
+                    }
+                } else {
+                    showNotification('Failed to load model data', 'error');
+                }
+            } catch (error) {
+                console.error('Error loading model data:', error);
+                showNotification('Error loading model data: ' + error.message, 'error');
+            }
+        }
+
+        // Close edit modal
+        function closeEditModal() {
+            document.getElementById('editModelModal').style.display = 'none';
+            document.getElementById('editModelForm').reset();
+            document.getElementById('editProfilePicName').textContent = '';
+        }
+
+        // Edit profile picture upload interaction
+        document.getElementById('editProfilePicUploadArea').addEventListener('click', () => {
+            document.getElementById('editProfilePic').click();
+        });
+
+        document.getElementById('editProfilePic').addEventListener('change', function(e) {
+            const fileName = e.target.files.length > 0 ? e.target.files[0].name : '';
+            document.getElementById('editProfilePicName').textContent = fileName;
+
+            if (fileName) {
+                document.getElementById('currentProfilePicContainer').innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <p style="margin: 0 0 5px 0; font-size: 13px; color: #64748b;">Current Picture:</p>
+                            <img id="currentProfilePic" src="" alt="Current Profile"
+                                 style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0;">
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 5px 0; font-size: 13px; color: #64748b;">New Picture:</p>
+                            <div style="color: #4a6cf7; font-weight: 500; font-size: 14px;">${fileName}</div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+        // Update model form submission
+        document.getElementById('editModelForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const updateModelBtn = document.getElementById('updateModelBtn');
+            const originalText = updateModelBtn.textContent;
+
+            // Validate required fields
+            const modelName = document.getElementById('editModelName').value;
+            const modelId = document.getElementById('editModelId').value;
+
+            if (!modelName || !modelId) {
+                showNotification('Please enter a model name!', 'error');
+                return;
+            }
+
+            // Create FormData for file upload
+            const formData = new FormData();
+            formData.append('ModelId', modelId);
+            formData.append('Name', modelName);
+            formData.append('Bio', document.getElementById('editModelBio').value);
+            formData.append('IsActive', document.getElementById('editModelIsActive').checked);
+
+            // Add profile picture if selected
+            const profilePicFile = document.getElementById('editProfilePic').files[0];
+            if (profilePicFile) {
+                formData.append('ProfilePicFile', profilePicFile);
+            }
+
+            // Add CSRF token
+            const csrfToken = getCSRFToken();
+            if (csrfToken) {
+                formData.append('__RequestVerificationToken', csrfToken);
+            }
+
+            // Show progress
+            updateModelBtn.disabled = true;
+            updateModelBtn.textContent = 'Updating...';
+
+            try {
+                console.log('Starting model update...');
+                const response = await fetch('/Admin/UpdateModel', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                console.log('Update model response status:', response.status);
+                const result = await response.json();
+                console.log('Update model result:', result);
+
+                if (result.success) {
+                    showNotification(result.message || 'Model updated successfully!', 'success');
+
+                    // Close modal
+                    closeEditModal();
+
+                    // Refresh both model lists
+                    await loadAllModels();
+                    await loadModels();
+
+                } else {
+                    showNotification(result.message || 'Failed to update model!', 'error');
                 }
 
-                emptyState.style.display = 'none';
-
-                tbody.innerHTML = models.map(model => {
-                    const modelId = model.modelId || model.ModelId || 0;
-                    const name = model.name || model.Name || 'No Name';
-                    const bio = model.bio || model.Bio || 'No bio provided';
-                    const profilePic = model.profilePic || '/images/default-model.jpg';
-                    const videoCount = model.videoCount || model.VideoCount || 0;
-                    const isActive = model.isActive !== undefined ? model.isActive : true;
-                    const createdAt = model.createdAt || 'Unknown';
-
-                    return `
-                        <tr data-id="${modelId}">
-                            <td>
-                                <img src="${profilePic}"
-                                     alt="${name}" class="model-profile-pic">
-                            </td>
-                            <td>
-                                <div class="model-info">
-                                    <h4>${name}</h4>
-                                    <p>${bio.length > 100 ? bio.substring(0, 100) + '...' : bio}</p>
-                                </div>
-                            </td>
-                            <td>${videoCount} videos</td>
-                            <td>
-                                <span class="status-badge ${isActive ? 'status-active' : 'status-inactive'}">
-                                    ${isActive ? 'Active' : 'Inactive'}
-                                </span>
-                            </td>
-                            <td>${createdAt}</td>
-                            <td>
-                                <div style="display: flex; gap: 8px;">
-                                    <button class="btn-toggle ${isActive ? '' : 'inactive'}"
-                                            onclick="toggleModelStatus(${modelId}, ${isActive})">
-                                        <i class="fas ${isActive ? 'fa-toggle-on' : 'fa-toggle-off'}"></i>
-                                        ${isActive ? 'Deactivate' : 'Activate'}
-                                    </button>
-                                    <button class="btn-delete" onclick="deleteModel(${modelId})"
-                                            ${videoCount > 0 ? 'disabled title="Cannot delete model with videos"' : ''}>
-                                        <i class="fas fa-trash"></i> Delete
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-
-                console.log('Models rendered successfully');
+            } catch (error) {
+                console.error('Update model error:', error);
+                showNotification('Error updating model: ' + error.message, 'error');
+            } finally {
+                updateModelBtn.disabled = false;
+                updateModelBtn.textContent = originalText;
             }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('editModelModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeEditModal();
+            }
+        });
+
+
+                // Update tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                btn.classList.add('active');
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+
+                // Load data when switching tabs
+                if (tabId === 'management') {
+                    console.log('Loading videos for management tab');
+                    loadVideos();
+                } else if (tabId === 'model-management') {
+                    console.log('Loading models for management tab');
+                    loadAllModels();
+                }
+            });
+        });
 
             // Delete model
             async function deleteModel(id) {
