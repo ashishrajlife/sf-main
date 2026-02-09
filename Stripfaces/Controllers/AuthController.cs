@@ -23,7 +23,6 @@ namespace stripfaces.Controllers
         {
             return View();
         }
-
         // POST: /Auth/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -44,9 +43,9 @@ namespace stripfaces.Controllers
 
                     // Redirect based on role
                     if (user.Role == "admin")
-                        return RedirectToAction("Index", "Admin");
+                        return RedirectToAction("Index", "Admin");  // Admin goes to dashboard
                     else
-                        return RedirectToAction("Index", "User");
+                        return RedirectToAction("Index", "Home");   // Regular users go to HOME PAGE
                 }
 
                 ModelState.AddModelError("", "Invalid login attempt");
@@ -96,7 +95,7 @@ namespace stripfaces.Controllers
                 HttpContext.Session.SetString("Role", user.Role);
                 HttpContext.Session.SetString("Email", user.Email);
 
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Index", "Home");
             }
 
             return View(model);
@@ -108,6 +107,7 @@ namespace stripfaces.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
+
         private string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())

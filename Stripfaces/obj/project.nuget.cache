@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xOv59b7zwSo=",
+  "dgSpecHash": "LIJaEYjbXCs=",
   "success": true,
-  "projectFilePath": "E:\\sfc.com\\Stripfaces\\Stripfaces.csproj",
+  "projectFilePath": "E:\\sfc.com-main-git\\sf-main\\Stripfaces\\Stripfaces.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ashis\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\ashis\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
@@ -39,9 +39,9 @@
       "code": "NU1510",
       "level": "Warning",
       "message": "PackageReference System.Diagnostics.Tools will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.",
-      "projectPath": "E:\\sfc.com\\Stripfaces\\Stripfaces.csproj",
+      "projectPath": "E:\\sfc.com-main-git\\sf-main\\Stripfaces\\Stripfaces.csproj",
       "warningLevel": 1,
-      "filePath": "E:\\sfc.com\\Stripfaces\\Stripfaces.csproj",
+      "filePath": "E:\\sfc.com-main-git\\sf-main\\Stripfaces\\Stripfaces.csproj",
       "libraryId": "System.Diagnostics.Tools",
       "targetGraphs": [
         "net10.0"

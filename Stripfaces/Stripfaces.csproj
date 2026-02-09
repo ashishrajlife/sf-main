@@ -15,6 +15,9 @@
 
   <ItemGroup>
     <Folder Include="Script\" />
+    <Folder Include="wwwroot\uploads\profilepicture\" />
+    <Folder Include="wwwroot\uploads\thumbnails\" />
+    <Folder Include="wwwroot\uploads\videos\" />
   </ItemGroup>
 
 </Project>
