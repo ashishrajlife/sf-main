@@ -324,6 +324,15 @@
             border-top-color: var(--yellow-primary);
             animation: spin 1s ease-in-out infinite;
         }
+        .home-button{
+            padding-top:20px;
+            padding-bottom:0px;
+            text-decoration:none;
+        }
+
+        .home-button a{
+                color: yellow;
+        }
 
         @@keyframes spin {
             to {
@@ -385,7 +394,14 @@
                     <span>Login</span>
                     <div class="loading" id="loadingSpinner"></div>
                 </button>
+
             </form>
+
+            <div class="home-button">
+            <a href="/">
+                <i class="fas fa-home"></i> <span>Home</span>
+            </a>
+            </div>
 
             <div class="form-footer">
                 <p>

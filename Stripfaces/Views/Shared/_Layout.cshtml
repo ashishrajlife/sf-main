@@ -190,8 +190,8 @@
             }
 
         .btn-register {
-            background: var(--yellow-primary);
-            color: #000;
+            background: transparent;
+            color: var(--yellow-primary);
             border: 2px solid var(--yellow-primary);
             padding: 0.6rem 1.8rem;
             border-radius: 50px;
@@ -212,6 +212,21 @@
                 transform: translateY(-2px);
                 box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
             }
+        .home-button{
+            background: transparent;
+            color: var(--yellow-primary);
+            border: 2px solid var(--yellow-primary);
+            /* padding: 15px; */
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            /* gap: 0.5rem; */
+            text-align: center;
+        }    
 
         .btn-logout {
             background: transparent;
@@ -689,9 +704,10 @@
                 }
                 else
                 {
-                    <a href="/">
+                    <div class="home-button">                   <a href="/">
                         <i class="fas fa-home"></i> <span>Home</span>
                     </a>
+                    </div>
                 }
 
                 <div class="auth-buttons">

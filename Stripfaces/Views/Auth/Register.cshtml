@@ -255,6 +255,16 @@
             .password-match.mismatch {
                 color: var(--error-red);
             }
+
+        .home-button {
+            padding-top: 20px;
+            padding-bottom: 0px;
+            text-decoration: none;
+        }
+
+            .home-button a {
+                color: yellow;
+            }
     </style>
 </head>
 <body>
@@ -292,7 +302,6 @@
                 <div class="form-group">
                     <label class="form-label">Password</label>
                     <div class="input-icon">
-                        Upload New VideoUpload New VideoUpload New VideoUpload New Video
                         <i class="fas fa-lock"></i>
                         <input type="password" class="form-control" asp-for="Password" id="password"
                                placeholder="Enter password" required>
@@ -316,6 +325,13 @@
                 <button type="submit" class="btn-primary" id="registerBtn">
                     <i class="fas fa-user-plus"></i> Create Account
                 </button>
+
+                <div class="home-button">
+                    <a href="/">
+                        <i class="fas fa-home"></i> <span>Home</span>
+                    </a>
+                </div>
+
             </form>
 
             <div class="form-footer">
