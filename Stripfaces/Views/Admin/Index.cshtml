@@ -333,13 +333,78 @@
             animation: slideIn 0.3s ease;
         }
 
-            .notification.success {
-                background: #10b981;
-            }
+        .notification.success {
+            background: #10b981;
+        }
 
-            .notification.error {
-                background: #ff4757;
-            }
+        .notification.error {
+            background: #ff4757;
+        }
+        /* Model Management Styles */
+.model-profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e2e8f0;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-active {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status-inactive {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.btn-toggle {
+    background: #f59e0b;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.3s ease;
+}
+
+.btn-toggle:hover {
+    background: #d97706;
+}
+
+.btn-toggle.inactive {
+    background: #6b7280;
+}
+
+.btn-toggle.inactive:hover {
+    background: #4b5563;
+}
+
+.model-info h4 {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.model-info p {
+    color: #666;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.text-muted {
+    color: #94a3b8 !important;
+    font-size: 13px;
+}
      
     </style>
 </head>
@@ -354,9 +419,12 @@
         </div>
 
         <!-- Tabs -->
+        <!-- Tabs -->
         <div class="tabs">
             <button class="tab-btn active" data-tab="upload">Upload New Video</button>
             <button class="tab-btn" data-tab="management">Video Management</button>
+            <button class="tab-btn" data-tab="model-management">Model Management</button>
+            <button class="tab-btn" data-tab="add-model">Add New Model</button>
         </div>
 
         <!-- Upload New Video Tab -->
@@ -482,6 +550,117 @@
                 </div>
             </section>
         </div>
+
+        <!-- Model Management Tab -->
+        <div id="model-management" class="tab-content">
+            <section class="management-section">
+                <div class="table-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-user-friends"></i>
+                        Model Management
+                    </h2>
+                    <div class="table-actions">
+                        <input type="text" class="search-box" placeholder="Search models..." id="modelSearchInput">
+                        <select class="form-control" style="width: 150px;" id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="video-table">
+                        <thead>
+                            <tr>
+                                <th>Profile</th>
+                                <th>Model Info</th>
+                                <th>Videos</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modelTableBody">
+                            <!-- Models will be dynamically loaded from backend -->
+                        </tbody>
+                    </table>
+
+                    <div class="empty-state" id="modelEmptyState">
+                        <i class="fas fa-user-slash"></i>
+                        <h3>No models found</h3>
+                        <p>Add your first model to get started</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Add New Model Tab -->
+        <div id="add-model" class="tab-content">
+            <section class="upload-section">
+                <h2 class="section-title">
+                    <i class="fas fa-user-plus"></i>
+                    Add New Model
+                </h2>
+
+                <form id="addModelForm" method="post" enctype="multipart/form-data">
+                    <div class="upload-form">
+                        <div>
+                            <div class="form-group required">
+                                <label for="modelName">Model Name *</label>
+                                <input type="text" id="modelName" name="Name" class="form-control"
+                                       placeholder="Enter model name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="modelBio">Bio / Description</label>
+                                <textarea id="modelBio" name="Bio" class="form-control"
+                                          placeholder="Enter model bio/description" rows="4"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="modelIsActive" name="IsActive" checked>
+                                    Active Model
+                                </label>
+                                <small class="text-muted">Inactive models won't appear on the website</small>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="form-group">
+                                <label for="profilePic">Profile Picture</label>
+                                <div class="file-upload-area" id="profilePicUploadArea">
+                                    <i class="fas fa-user-circle"></i>
+                                    <p><strong>Click to upload profile picture</strong></p>
+                                    <p>Recommended: 500x500 pixels, JPG/PNG</p>
+                                    <input type="file" id="profilePic" name="ProfilePicFile"
+                                           accept=".jpg,.jpeg,.png" style="display: none;">
+                                </div>
+                                <div id="profilePicName" class="file-name"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <p><strong>Tips:</strong></p>
+                                <ul style="font-size: 14px; color: #666; margin-top: 10px;">
+                                    <li>Model name should be unique</li>
+                                    <li>Add a descriptive bio to help users</li>
+                                    <li>Profile picture should be clear and professional</li>
+                                    <li>You can deactivate models without deleting them</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel" id="cancelModelBtn">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="addModelBtn">Add Model</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+
     </div>
 
     <script>
@@ -593,6 +772,299 @@
                 showNotification('Error loading models: ' + error.message, 'error');
             }
         }
+
+
+                    // Load all models for management
+            async function loadAllModels() {
+                try {
+                    console.log('Loading all models...');
+                    const response = await fetch('/Admin/GetAllModels');
+                    console.log('All models response status:', response.status);
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log('All models result:', result);
+
+                        if (result.success && result.data) {
+                            renderModels(result.data);
+                            console.log('Models loaded successfully');
+                        } else {
+                            console.error('Failed to load models:', result.message);
+                            showNotification('Failed to load models: ' + (result.message || 'Unknown error'), 'error');
+                        }
+                    } else {
+                        console.error('Failed to load models:', response.status);
+                        showNotification('Failed to load models', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error loading models:', error);
+                    showNotification('Error loading models: ' + error.message, 'error');
+                }
+            }
+
+            // Render models in table
+            function renderModels(models) {
+                console.log('Rendering models:', models);
+                const tbody = document.getElementById('modelTableBody');
+                const emptyState = document.getElementById('modelEmptyState');
+
+                if (!models || models.length === 0) {
+                    console.log('No models to display');
+                    emptyState.style.display = 'block';
+                    tbody.innerHTML = '';
+                    return;
+                }
+
+                emptyState.style.display = 'none';
+
+                tbody.innerHTML = models.map(model => {
+                    const modelId = model.modelId || model.ModelId || 0;
+                    const name = model.name || model.Name || 'No Name';
+                    const bio = model.bio || model.Bio || 'No bio provided';
+                    const profilePic = model.profilePic || '/images/default-model.jpg';
+                    const videoCount = model.videoCount || model.VideoCount || 0;
+                    const isActive = model.isActive !== undefined ? model.isActive : true;
+                    const createdAt = model.createdAt || 'Unknown';
+
+                    return `
+                        <tr data-id="${modelId}">
+                            <td>
+                                <img src="${profilePic}"
+                                     alt="${name}" class="model-profile-pic">
+                            </td>
+                            <td>
+                                <div class="model-info">
+                                    <h4>${name}</h4>
+                                    <p>${bio.length > 100 ? bio.substring(0, 100) + '...' : bio}</p>
+                                </div>
+                            </td>
+                            <td>${videoCount} videos</td>
+                            <td>
+                                <span class="status-badge ${isActive ? 'status-active' : 'status-inactive'}">
+                                    ${isActive ? 'Active' : 'Inactive'}
+                                </span>
+                            </td>
+                            <td>${createdAt}</td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn-toggle ${isActive ? '' : 'inactive'}"
+                                            onclick="toggleModelStatus(${modelId}, ${isActive})">
+                                        <i class="fas ${isActive ? 'fa-toggle-on' : 'fa-toggle-off'}"></i>
+                                        ${isActive ? 'Deactivate' : 'Activate'}
+                                    </button>
+                                    <button class="btn-delete" onclick="deleteModel(${modelId})"
+                                            ${videoCount > 0 ? 'disabled title="Cannot delete model with videos"' : ''}>
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                console.log('Models rendered successfully');
+            }
+
+            // Delete model
+            async function deleteModel(id) {
+                if (!confirm('Are you sure you want to delete this model?')) return;
+
+                try {
+                    console.log('Deleting model ID:', id);
+                    const response = await fetch(`/Admin/DeleteModel/${id}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': getCSRFToken()
+                        }
+                    });
+
+                    const result = await response.json();
+                    console.log('Delete model response:', result);
+
+                    if (result.success) {
+                        showNotification(result.message || 'Model deleted successfully!', 'success');
+                        loadAllModels(); // Refresh the list
+                        loadModels(); // Also refresh the dropdown in upload form
+                    } else {
+                        showNotification(result.message || 'Failed to delete model', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error deleting model:', error);
+                    showNotification('Error deleting model: ' + error.message, 'error');
+                }
+            }
+
+            // Toggle model status
+            async function toggleModelStatus(id, currentStatus) {
+                try {
+                    console.log('Toggling model status for ID:', id);
+                    const response = await fetch(`/Admin/ToggleModelStatus/${id}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': getCSRFToken()
+                        }
+                    });
+
+                    const result = await response.json();
+                    console.log('Toggle status response:', result);
+
+                    if (result.success) {
+                        showNotification(result.message || 'Model status updated!', 'success');
+                        loadAllModels(); // Refresh the list
+                        loadModels(); // Also refresh the dropdown in upload form
+                    } else {
+                        showNotification(result.message || 'Failed to update status', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error toggling model status:', error);
+                    showNotification('Error updating status: ' + error.message, 'error');
+                }
+            }
+
+            // Add new model form submission
+            document.getElementById('addModelForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const addModelBtn = document.getElementById('addModelBtn');
+                const originalText = addModelBtn.textContent;
+
+                // Validate required fields
+                const modelName = document.getElementById('modelName').value;
+
+                if (!modelName) {
+                    showNotification('Please enter a model name!', 'error');
+                    return;
+                }
+
+                // Create FormData for file upload
+                const formData = new FormData();
+                formData.append('Name', modelName);
+                formData.append('Bio', document.getElementById('modelBio').value);
+                formData.append('IsActive', document.getElementById('modelIsActive').checked);
+
+                // Add profile picture if selected
+                const profilePicFile = document.getElementById('profilePic').files[0];
+                if (profilePicFile) {
+                    formData.append('ProfilePicFile', profilePicFile);
+                }
+
+                // Add CSRF token
+                const csrfToken = getCSRFToken();
+                if (csrfToken) {
+                    formData.append('__RequestVerificationToken', csrfToken);
+                }
+
+                // Show progress
+                addModelBtn.disabled = true;
+                addModelBtn.textContent = 'Adding Model...';
+
+                try {
+                    console.log('Starting model addition...');
+                    const response = await fetch('/Admin/AddModel', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    console.log('Add model response status:', response.status);
+                    const result = await response.json();
+                    console.log('Add model result:', result);
+
+                    if (result.success) {
+                        showNotification(result.message || 'Model added successfully!', 'success');
+
+                        // Reset form
+                        this.reset();
+                        document.getElementById('profilePicName').textContent = '';
+                        document.getElementById('modelIsActive').checked = true;
+
+                        // Switch to model management tab and refresh
+                        document.querySelector('.tab-btn[data-tab="model-management"]').click();
+                        await loadAllModels();
+
+                    } else {
+                        showNotification(result.message || 'Failed to add model!', 'error');
+                    }
+
+                } catch (error) {
+                    console.error('Add model error:', error);
+                    showNotification('Error adding model: ' + error.message, 'error');
+                } finally {
+                    addModelBtn.disabled = false;
+                    addModelBtn.textContent = originalText;
+                }
+            });
+
+            // Cancel model form
+            document.getElementById('cancelModelBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to clear the form?')) {
+                    document.getElementById('addModelForm').reset();
+                    document.getElementById('profilePicName').textContent = '';
+                    document.getElementById('modelIsActive').checked = true;
+                }
+            });
+
+            // Profile picture upload interaction
+            document.getElementById('profilePicUploadArea').addEventListener('click', () => {
+                document.getElementById('profilePic').click();
+            });
+
+            document.getElementById('profilePic').addEventListener('change', function(e) {
+                const fileName = e.target.files.length > 0 ? e.target.files[0].name : '';
+                document.getElementById('profilePicName').textContent = fileName;
+            });
+
+            // Model search functionality
+            document.getElementById('modelSearchInput').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('#modelTableBody tr');
+
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+
+            // Model status filter
+            document.getElementById('statusFilter').addEventListener('change', function(e) {
+                const status = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('#modelTableBody tr');
+
+                rows.forEach(row => {
+                    if (!status) {
+                        row.style.display = '';
+                        return;
+                    }
+
+                    const statusCell = row.cells[3];
+                    const statusText = statusCell.textContent.toLowerCase();
+                    row.style.display = statusText.includes(status) ? '' : 'none';
+                });
+            });
+
+            // Update tab switching to load models when clicking model-management tab
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                    btn.classList.add('active');
+                    const tabId = btn.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+
+                    // Load data when switching tabs
+                    if (tabId === 'management') {
+                        console.log('Loading videos for management tab');
+                        loadVideos();
+                    } else if (tabId === 'model-management') {
+                        console.log('Loading models for management tab');
+                        loadAllModels();
+                    }
+                });
+            });
+
+
 
         // Load videos from backend
         async function loadVideos() {

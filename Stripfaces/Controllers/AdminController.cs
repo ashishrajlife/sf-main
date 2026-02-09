@@ -360,5 +360,182 @@ namespace stripfaces.Controllers
         }
 
 
+        // GET: /Admin/GetAllModels (for listing models)
+        [HttpGet]
+        [Route("GetAllModels")]
+        public async Task<IActionResult> GetAllModels()
+        {
+            if (!IsAuthenticated() || !IsAdmin())
+                return Json(new { success = false, message = "Unauthorized" });
+
+            try
+            {
+                var models = await _context.Models
+                    .OrderByDescending(m => m.CreatedAt)
+                    .Select(m => new
+                    {
+                        modelId = m.ModelId,
+                        name = m.Name,
+                        bio = m.Bio,
+                        profilePic = m.ProfilePic ?? "/images/default-model.jpg",
+                        isActive = m.IsActive,
+                        videoCount = m.Videos.Count,
+                        createdAt = m.CreatedAt.ToString("MMM dd, yyyy")
+                    })
+                    .ToListAsync();
+
+                return Json(new { success = true, data = models });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        // POST: /Admin/AddModel
+        [HttpPost]
+        [Route("AddModel")]
+        public async Task<IActionResult> AddModel([FromForm] ModelViewModel model)
+        {
+            if (!IsAuthenticated() || !IsAdmin())
+                return Json(new { success = false, message = "Unauthorized" });
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    // Check if model name already exists
+                    if (await _context.Models.AnyAsync(m => m.Name == model.Name))
+                    {
+                        return Json(new { success = false, message = "Model name already exists" });
+                    }
+
+                    string profilePicPath = null;
+
+                    // Save profile picture if provided
+                    if (model.ProfilePicFile != null && model.ProfilePicFile.Length > 0)
+                    {
+                        profilePicPath = await _fileUploadService.SaveProfilePicture(model.ProfilePicFile);
+                    }
+
+                    // Create new model
+                    var newModel = new Models.Model
+                    {
+                        Name = model.Name,
+                        Bio = model.Bio,
+                        ProfilePic = profilePicPath,
+                        IsActive = model.IsActive,
+                        CreatedAt = DateTime.Now
+                    };
+
+                    _context.Models.Add(newModel);
+                    await _context.SaveChangesAsync();
+
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Model added successfully",
+                        modelId = newModel.ModelId
+                    });
+                }
+
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return Json(new { success = false, message = string.Join(", ", errors) });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        // POST: /Admin/DeleteModel/{id}
+        [HttpPost]
+        [Route("DeleteModel/{id}")]
+        public async Task<IActionResult> DeleteModel(int id)
+        {
+            if (!IsAuthenticated() || !IsAdmin())
+                return Json(new { success = false, message = "Unauthorized" });
+
+            try
+            {
+                var model = await _context.Models
+                    .Include(m => m.Videos)
+                    .FirstOrDefaultAsync(m => m.ModelId == id);
+
+                if (model == null)
+                    return Json(new { success = false, message = "Model not found" });
+
+                // Check if model has videos
+                if (model.Videos != null && model.Videos.Any())
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Cannot delete model with existing videos. Delete videos first."
+                    });
+                }
+
+                // Delete profile picture file if exists
+                if (!string.IsNullOrEmpty(model.ProfilePic) &&
+                    !model.ProfilePic.Contains("/images/default-model.jpg"))
+                {
+                    var profilePicPath = model.ProfilePic;
+                    if (profilePicPath.StartsWith("/"))
+                        profilePicPath = profilePicPath.Substring(1);
+
+                    var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", profilePicPath);
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                    }
+                }
+
+                _context.Models.Remove(model);
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true, message = "Model deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        // POST: /Admin/ToggleModelStatus/{id}
+        [HttpPost]
+        [Route("ToggleModelStatus/{id}")]
+        public async Task<IActionResult> ToggleModelStatus(int id)
+        {
+            if (!IsAuthenticated() || !IsAdmin())
+                return Json(new { success = false, message = "Unauthorized" });
+
+            try
+            {
+                var model = await _context.Models.FindAsync(id);
+                if (model == null)
+                    return Json(new { success = false, message = "Model not found" });
+
+                model.IsActive = !model.IsActive;
+                await _context.SaveChangesAsync();
+
+                return Json(new
+                {
+                    success = true,
+                    message = $"Model {(model.IsActive ? "activated" : "deactivated")}",
+                    isActive = model.IsActive
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
+
     }
 }

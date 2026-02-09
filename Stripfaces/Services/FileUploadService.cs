@@ -80,6 +80,30 @@ namespace stripfaces.Services
             return $"/{filePath.Replace("\\", "/")}";
         }
 
+        public async Task<string> SaveProfilePicture(IFormFile profilePicFile)
+        {
+            // Create profile picture folder if not exists
+            var profilePicFolder = Path.Combine("uploads", "profilepicture");
+            var fullPath = Path.Combine(_env.WebRootPath, profilePicFolder);
+
+            if (!Directory.Exists(fullPath))
+                Directory.CreateDirectory(fullPath);
+
+            // Generate unique filename
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(profilePicFile.FileName)}";
+            var filePath = Path.Combine(profilePicFolder, fileName);
+            var fullFilePath = Path.Combine(_env.WebRootPath, filePath);
+
+            // Save file
+            using (var stream = new FileStream(fullFilePath, FileMode.Create))
+            {
+                await profilePicFile.CopyToAsync(stream);
+            }
+
+            // Return relative path for database
+            return $"/{filePath.Replace("\\", "/")}";
+        }
+
         public async Task<string> GenerateThumbnail(string videoPath, string modelName)
         {
             // For now, return a placeholder
