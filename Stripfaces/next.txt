@@ -1,3 +1,4 @@
 ﻿watch.cshtml me commments section add krna hai 
 AdminVideo controller me comments Db table update krna 
 comments aur like table banana hai
+request model section banana hai taaki users request kr sake apni fav models
